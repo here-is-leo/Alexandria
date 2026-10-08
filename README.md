@@ -1,12 +1,15 @@
 <div align="center">
 
-<img src="assets/alexandria-hero.svg" alt="Alexandria Activity Monitor" width="100%">
+<img src="assets/alexandria-hero.svg" alt="Alexandria Activity Monitor v3" width="100%">
 
 <br>
+
 <h1>⚡ Alexandria</h1>
 
-<p><strong>Monitor the system. Capture the activity. Prove the integrity.</strong></p>
-<p>A bilingual, laboratory-grade activity monitor for authorized cybersecurity education — from keystrokes and clipboard to process launches and HTML forensics dashboards.</p>
+<h1>⚡ Alexandria</h1>
+
+<p><strong>Monitor the system. Capture the activity. Prove the integrity. Export automatically.</strong></p>
+<p>A bilingual, laboratory-grade activity monitor for authorized cybersecurity education — with auto-export on authorized USB drives, 9 log types, and professional HTML forensics dashboards.</p>
 
 <a href="#-english"><img src="https://img.shields.io/badge/READ%20IN%20ENGLISH-5ee7ff?style=for-the-badge&logo=readthedocs&logoColor=07111f" alt="Read in English"></a>
 <a href="#-فارسی"><img src="https://img.shields.io/badge/خواندن%20به%20فارسی-ff6bd6?style=for-the-badge&logo=bookstack&logoColor=ffffff" alt="Read in Persian"></a>
@@ -18,18 +21,20 @@
 [![License](https://img.shields.io/badge/License-MIT-blue?style=for-the-badge)](LICENSE)
 [![Lab Only](https://img.shields.io/badge/Use-Authorized%20Laboratory%20Only-red?style=for-the-badge)]()
 
+[![Version](https://img.shields.io/badge/Version-3.0.0-brightgreen?style=flat-square)](#version-history)
+[![Auto-Export](https://img.shields.io/badge/Auto--Export-USB%20Marker-purple?style=flat-square)](#auto-export-feature)
 [![HTML](https://img.shields.io/badge/Report-HTML%20Dashboard-orange?style=flat-square)](#)
 [![SHA-256](https://img.shields.io/badge/Integrity-SHA--256-green?style=flat-square)](#)
 [![ZIP](https://img.shields.io/badge/Export-ZIP%20Compressed-blue?style=flat-square)](#)
 [![Single Instance](https://img.shields.io/badge/Single--Instance-Mutex%20Protected-purple?style=flat-square)](#)
 
-> A bilingual, laboratory-grade activity monitoring tool for authorized cybersecurity training — capturing 9 log types with professional HTML reporting.
+> A bilingual, laboratory-grade activity monitoring tool for authorized cybersecurity training — capturing 9 log types with auto-export on authorized USB drives and professional HTML reporting.
 
 <div align="center">
 
-| 🎯 9 Log Types | 🌍 2 Languages | 🧠 MITRE Mapped | 🔐 Integrity Verified |
-|:---:|:---:|:---:|:---:|
-| `keyboard · window · browser · clipboard · process · usb · system · activity` | `EN + FA` | `7 Techniques` | `SHA-256` |
+| 🎯 9 Log Types | 🌍 2 Languages | 🧠 MITRE Mapped | 🔐 Integrity Verified | 🔌 Auto-Export |
+|:---:|:---:|:---:|:---:|:---:|
+| `keyboard · window · browser · clipboard · process · usb · system · activity` | `EN + FA` | `7 Techniques` | `SHA-256` | `Marker File` |
 
 </div>
 
@@ -38,11 +43,11 @@
 
 ```text
 ┌──────────────────────────────────────────────────────────────────────┐
-│   INSTALL  →  RUN SILENTLY  →  COLLECT  →  EXPORT  →  ANALYZE       │
-│      ↓             ↓              ↓           ↓           ↓          │
-│   install.bat   persistence   9 log types   ZIP+HTML   report.html   │
-│                  (Run Key +    thread-safe  SHA-256    MITRE map     │
-│                   Task)        rotation     ZIP        insights      │
+│   INSTALL  →  RUN SILENTLY  →  PLUG USB  →  AUTO-EXPORT  →  ANALYZE │
+│      ↓             ↓              ↓             ↓            ↓        │
+│   install.bat   persistence   ALEXANDRIA.md  ZIP+HTML   report.html  │
+│                  (Run Key +   marker file    SHA-256    MITRE map    │
+│                   Task)       detected       ZIP        insights     │
 └──────────────────────────────────────────────────────────────────────┘
 ```
 
@@ -51,6 +56,7 @@
 ## Table of Contents
 
 - [About](#about)
+- [What's New in v3?](#whats-new-in-v3)
 - [Why Alexandria?](#why-alexandria)
 - [Who Is This For?](#who-is-this-for)
 - [What You'll Learn](#what-youll-learn)
@@ -58,6 +64,7 @@
 - [How to Use This Project](#how-to-use-this-project)
 - [Prerequisites](#prerequisites)
 - [Features Overview](#features-overview)
+- [Auto-Export Feature](#auto-export-feature)
 - [Technologies and Tools](#technologies-and-tools)
 - [Repository Structure](#repository-structure)
 - [Deployment Workflow](#deployment-workflow)
@@ -78,9 +85,20 @@
 
 **Alexandria** is a laboratory-grade activity monitoring tool designed for **authorized cybersecurity training**. It runs silently on Windows systems, capturing a comprehensive picture of user and system activity — then produces a professional HTML report with SHA-256 integrity verification and a compressed ZIP archive for easy transfer.
 
+**New in v3:** Auto-export is triggered simply by plugging in an **authorized USB drive** — one that contains a specific marker file (`ALEXANDRIA.md`) with predefined content. No manual interaction required.
+
 Named after the legendary **Library of Alexandria** — the ancient world's greatest repository of knowledge — this tool embodies the same principle: **gather, preserve, and present information with integrity**.
 
-Every log entry, every process launch, every clipboard event is captured with millisecond precision and stored in a thread-safe, rotation-aware log system.
+## What's New in v3?
+
+| Feature | Description |
+|---------|-------------|
+| 🔌 **Auto-Export** | Detects authorized USB drives and exports logs automatically |
+| 📄 **Marker File Detection** | `ALEXANDRIA.md` with predefined content acts as an authorization token |
+| 🛠 **USB Marking Tool** | `mark_usb.bat` tags any USB drive as authorized in one click |
+| 📊 **Enhanced Reports** | HTML dashboard now includes USB events and auto-export statistics |
+| 🎯 **Trigger Tracking** | Export log records whether export was `auto` or `manual` |
+| 🔒 **Safer Defaults** | Only USBs with valid marker file can trigger export |
 
 ## Why Alexandria?
 
@@ -93,6 +111,7 @@ It was built for a cybersecurity laboratory course, with emphasis on:
 - **Professional reporting** — GitHub-dark HTML dashboard
 - **Bilingual support** — Persian and English keyboard layouts
 - **Defensive awareness** — Every feature maps to a defensive lesson
+- **Auto-export on trusted media** — Marker-based USB authorization
 
 ## Who Is This For?
 
@@ -110,6 +129,8 @@ It was built for a cybersecurity laboratory course, with emphasis on:
 - Capture keyboard input across layouts (Persian + English) with VK codes
 - Extract browser history from SQLite databases in real-time
 - Monitor clipboard, processes, USB events, and idle state
+- **Detect authorized USB media via marker files**
+- **Trigger automatic export when a trusted device is connected**
 - Generate SHA-256 integrity manifests for forensic evidence
 - Build a dark-mode HTML dashboard with pure CSS
 - Compress forensic data with ZIP for evidence preservation
@@ -126,7 +147,8 @@ It was built for a cybersecurity laboratory course, with emphasis on:
 | Persistence methods | 2 (Run Key + Scheduled Task) |
 | Integrity | SHA-256 manifest per file |
 | Report format | HTML dashboard + ZIP archive |
-| Config | JSON (12 options) |
+| Config | JSON (16 options) |
+| Auto-Export | Marker file (`ALEXANDRIA.md`) |
 | Single-instance | Windows Mutex |
 | Author | Leo / Ilya Farahani |
 
@@ -136,11 +158,12 @@ It was built for a cybersecurity laboratory course, with emphasis on:
 2. **Get written permission** from the system owner and your instructor.
 3. **Review the source code** (`alexandria.py`) before deployment.
 4. **Test on your own machine first** using the provided scripts.
-5. **Deploy on the authorized target** via `install.bat` (Run as admin).
-6. **Wait the monitoring period** — no USB needed during this time.
-7. **Export evidence** with `export.bat` on the final day.
-8. **Analyze** `report.html` and raw logs.
-9. **Uninstall cleanly** with `uninstall.bat` after evaluation.
+5. **Mark your USB** with `mark_usb.bat` before going to the lab.
+6. **Deploy on the authorized target** via `install.bat` (Run as admin).
+7. **Wait the monitoring period** — no USB needed during this time.
+8. **Plug in the marked USB** on the final day — auto-export happens.
+9. **Analyze** `report.html` and raw logs.
+10. **Uninstall cleanly** with `uninstall.bat` after evaluation.
 
 ## Prerequisites
 
@@ -149,6 +172,7 @@ It was built for a cybersecurity laboratory course, with emphasis on:
 - Administrator access on the target system
 - Python 3.10+ (for building from source)
 - Written authorization for the target system
+- A USB flash drive (to be marked as authorized)
 
 **Recommended:**
 - Basic Python knowledge
@@ -169,6 +193,7 @@ It was built for a cybersecurity laboratory course, with emphasis on:
 | 7 | 🔌 **USB Event Monitor** | Tracks removable drive connect/disconnect | `enable_usb_events` |
 | 8 | 🖥️ **System Info Collector** | Hostname, OS, CPU, RAM, user every 6 hours | `system_info_interval` |
 | 9 | 📊 **HTML Report Generator** | Dark-mode dashboard with stats and bar charts | `enable_html_report` |
+| 10 | 🎯 **Auto-Export on Marker USB** | Detects `ALEXANDRIA.md` and exports automatically | `auto_export_enabled` |
 
 | Bonus Feature | Purpose |
 |---------------|---------|
@@ -177,6 +202,81 @@ It was built for a cybersecurity laboratory course, with emphasis on:
 | 📦 **ZIP Export** | Compresses all logs on export |
 | 🛡️ **Single-Instance Mutex** | Prevents duplicate processes |
 | ⚙️ **JSON Config** | Change behavior without recompiling |
+| 🎯 **Trigger Tracking** | Records whether export was auto or manual |
+
+## Auto-Export Feature
+
+### 🎯 How It Works
+
+```text
+┌────────────────────────────────────────────────────────────────┐
+│                    AUTO-EXPORT WORKFLOW                        │
+├────────────────────────────────────────────────────────────────┤
+│                                                                │
+│  1. Developer marks USB with mark_usb.bat                      │
+│     └── Creates ALEXANDRIA.md with secret content              │
+│                                                                │
+│  2. Alexandria monitors removable drives every 5 seconds       │
+│     └── Uses psutil.disk_partitions() + GetDriveTypeW          │
+│                                                                │
+│  3. When USB is plugged in:                                    │
+│     ├── Check for ALEXANDRIA.md file                           │
+│     ├── Read file content                                      │
+│     ├── Compare with config.auto_export_marker_content         │
+│     └── If match → auto-export                                 │
+│                                                                │
+│  4. Auto-export:                                               │
+│     ├── Copy all logs to USB:\logs_export\                     │
+│     ├── Generate HTML report                                   │
+│     ├── Create SHA-256 manifest                                │
+│     ├── Build ZIP archive                                      │
+│     └── Log event to usb_*.txt                                 │
+│                                                                │
+│  5. Manual fallback:                                           │
+│     └── export.bat still works if auto-export fails            │
+│                                                                │
+└────────────────────────────────────────────────────────────────┘
+```
+
+### 🔑 Configuration
+
+In `config.json`:
+
+```json
+{
+  "auto_export_enabled": true,
+  "auto_export_marker_file": "ALEXANDRIA.md",
+  "auto_export_marker_content": "ALEXANDRIA-AUTHORIZED-EXPORT-KEY-v3-2026",
+  "auto_export_check_interval": 5
+}
+```
+
+### 🛠 Marking a USB Drive
+
+1. Copy `mark_usb.bat` to the USB root
+2. Double-click it
+3. It creates `ALEXANDRIA.md` with the authorized content
+4. Now the USB will trigger auto-export on any system with Alexandria v3
+
+### 🔒 Security Properties
+
+| Property | Value |
+|----------|-------|
+| Marker file name | `ALEXANDRIA.md` |
+| Content comparison | Exact match required |
+| Case sensitivity | Yes |
+| Multiple markers | Only one file is checked |
+| Manual override | Not possible (config required) |
+| USB without marker | Ignored silently |
+| Logged events | All USB connects/disconnects |
+
+### ⚠️ Considerations
+
+- **First-day export:** If the USB is plugged in during `install.bat`, an empty `logs_export` will be created. This is harmless.
+- **Re-export:** The USB must be disconnected and reconnected to trigger export again.
+- **Lost USB:** A USB without `ALEXANDRIA.md` cannot trigger export.
+- **Formatted USB:** The marker file is lost on format. Re-mark required.
+- **Transferability:** The marker file only triggers export on systems with Alexandria installed.
 
 ## Technologies and Tools
 
@@ -192,6 +292,7 @@ It was built for a cybersecurity laboratory course, with emphasis on:
 | **Compression** | `zipfile` (DEFLATE) |
 | **Reporting** | Pure HTML + CSS (no JS framework) |
 | **Persistence** | Registry Run Key + Task Scheduler |
+| **Auto-Export** | Marker file detection + removable drive polling |
 
 | Tool | Purpose |
 |---|---|
@@ -206,17 +307,17 @@ It was built for a cybersecurity laboratory course, with emphasis on:
 ```text
 alexandria/
 ├── alexandria.py              # Main daemon + export module
-├── alexandria.exe             # Compiled executable
-├── config.json                # Runtime configuration
+├── config.json                # Runtime configuration (16 options)
 ├── install.bat                # Day-1 installer
-├── export.bat                 # Day-7 log exporter
+├── export.bat                 # Manual fallback exporter
 ├── uninstall.bat              # Post-project cleanup
+├── mark_usb.bat               # USB marker tool (v3)
 ├── README.md                  # This file
 ├── commands.txt               # Command reference card
 ├── LICENSE                    # MIT License
-├── build/                     # PyInstaller temporary files
-├── dist/                      # PyInstaller output
-└── assets/                    # Images and diagrams (optional)
+├── .gitignore                 # Git ignore rules
+└── assets/
+    └── alexandria-hero.svg    # Hero banner
 ```
 
 **Runtime layout on target system:**
@@ -234,22 +335,31 @@ alexandria/
     └── system_YYYYMMDD.txt
 ```
 
+**USB marker file:**
+
+```text
+USB:\ALEXANDRIA.md
+Content: ALEXANDRIA-AUTHORIZED-EXPORT-KEY-v3-2026
+```
+
 ## Deployment Workflow
 
 ```text
 ┌─────────────────────────────────────────────────────────────────┐
 │  DAY 0 — PREPARATION                                            │
 │  ├── Build: pyinstaller --noconsole --onefile alexandria.py    │
-│  ├── Copy 7 files to USB root                                  │
-│  └── Verify hashes match on clean system                       │
+│  ├── Run mark_usb.bat on your USB flash drive                  │
+│  ├── Copy 8 files to USB root                                  │
+│  └── Verify ALEXANDRIA.md content matches config               │
 └─────────────────────────────────────────────────────────────────┘
                               │
                               ▼
 ┌─────────────────────────────────────────────────────────────────┐
 │  DAY 1 — INSTALLATION (USB plug #1)                            │
 │  ├── Right-click install.bat → Run as administrator            │
-│  ├── Defenders exclusion added automatically                   │
+│  ├── Defender exclusion added automatically                    │
 │  ├── Run Key + Scheduled Task created                          │
+│  ├── (Optional) Initial empty export may occur                 │
 │  └── USB removed — Alexandria runs silently                    │
 └─────────────────────────────────────────────────────────────────┘
                               │
@@ -259,16 +369,19 @@ alexandria/
 │  ├── 9 log types collected continuously                        │
 │  ├── Auto-resumes after reboot (persistence)                   │
 │  ├── Survives user logoff / shutdown / Fast Startup            │
+│  ├── Auto-export monitor polls for authorized USB every 5s     │
 │  └── Log rotation prevents file bloat                          │
 └─────────────────────────────────────────────────────────────────┘
                               │
                               ▼
 ┌─────────────────────────────────────────────────────────────────┐
-│  DAY 7 — EXPORT (USB plug #2)                                  │
-│  ├── Double-click export.bat FROM the USB drive                │
+│  DAY 7 — AUTO-EXPORT (USB plug #2)                             │
+│  ├── Simply plug in the marked USB drive                       │
+│  ├── Alexandria detects ALEXANDRIA.md                          │
 │  ├── HTML report generated (report.html)                       │
 │  ├── SHA-256 manifest created (_hashes.sha256)                 │
 │  ├── ZIP archive produced (alexandria_export.zip)              │
+│  ├── Event logged in usb_YYYYMMDD.txt                          │
 │  └── USB removed with all evidence                             │
 └─────────────────────────────────────────────────────────────────┘
                               │
@@ -335,9 +448,17 @@ alexandria/
 
 **Why it matters:** Data exfiltration often happens via removable media.
 
-**How Alexandria uses it:** `psutil.disk_partitions()` polled every 10 seconds for removable drives.
+**How Alexandria uses it:** `psutil.disk_partitions()` polled every 5 seconds for removable drives.
 
 **How to defend:** Use Windows Defender Device Control or equivalent DLP policies.
+
+### 8. Marker-Based Device Authorization
+
+**Why it matters:** Not every USB should be allowed to receive sensitive data.
+
+**How Alexandria uses it:** Requires `ALEXANDRIA.md` with exact content match before triggering export.
+
+**How to defend:** Legitimate systems use similar mechanisms (BitLocker To Go, device allowlists). Attackers use them for C2 (Command & Control) markers. Always audit removable media.
 
 ## MITRE ATT&CK Mapping
 
@@ -351,8 +472,9 @@ alexandria/
 | Process Discovery | **T1057** | Process Monitor | Process creation auditing |
 | System Information Discovery | **T1082** | System Info Collector | Baseline monitoring |
 | File and Directory Discovery | **T1083** | Browser History Scan | Filesystem auditing |
+| **Exfiltration Over Physical Medium** | **T1052.001** | **Auto-Export to USB** | DLP, USB port control |
 
-> Alexandria demonstrates **7 techniques** across the **Discovery** and **Persistence** tactics. Every technique maps to a defensive control — this is the core educational value.
+> Alexandria demonstrates **8 techniques** across the **Collection**, **Persistence**, **Discovery**, and **Exfiltration** tactics. Every technique maps to a defensive control — this is the core educational value.
 
 ## Sample Output
 
@@ -365,18 +487,28 @@ alexandria/
 [2026-10-07 12:32:18] [chrome.exe] [Google - Search] CHAR: <enter> | EN: <enter> | VK: 13
 ```
 
-### `clipboard_20261007.txt`
+### `usb_20261015.txt` (Auto-Export Events)
 
 ```text
-[2026-10-07 12:33:01] [chrome.exe] CLIP: https://example.com/login?token=abc123
-[2026-10-07 12:34:15] [notepad.exe] CLIP: MySecretPassword2026!
+[2026-10-08 15:30:00] AUTO-EXPORT MONITOR STARTED (marker=ALEXANDRIA.md)
+[2026-10-15 14:22:15] USB CONNECTED: E:\
+[2026-10-15 14:22:15] MARKER MATCHED: E:\ — starting auto-export
+[2026-10-15 14:22:17] AUTO-EXPORT COMPLETED: E:\
+[2026-10-15 14:25:30] USB DISCONNECTED: E:\
 ```
 
-### `process_20261007.txt`
+### `_summary.txt`
 
 ```text
-[2026-10-07 12:35:00] LAUNCH: chrome.exe | PID: 12345 | USER: LabUser | EXE: C:\Program Files\Google\Chrome\Application\chrome.exe
-[2026-10-07 12:35:12] LAUNCH: notepad.exe | PID: 12346 | USER: LabUser | EXE: C:\Windows\System32\notepad.exe
+Alexandria v3 Export
+Export time: 2026-10-15 14:22:17
+Trigger: auto
+Source: C:\Users\LabUser\AppData\Roaming\Alexandria\logs
+Target: E:\
+Files copied: 8
+HTML report: yes
+SHA-256 manifest: yes
+ZIP archive: yes
 ```
 
 ### `report.html` (excerpt)
@@ -389,6 +521,8 @@ alexandria/
   <div class="stat"><div class="num">400</div><div class="lbl">Browser Visits</div></div>
   <div class="stat"><div class="num">8</div><div class="lbl">Clipboard Events</div></div>
   <div class="stat"><div class="num">148</div><div class="lbl">Process Launches</div></div>
+  <div class="stat"><div class="num">3</div><div class="lbl">USB Events</div></div>
+  <div class="stat"><div class="num">1</div><div class="lbl">Auto-Exports</div></div>
 </div>
 ```
 
@@ -399,6 +533,7 @@ alexandria/
 - [ ] Add network connection monitoring (established sockets)
 - [ ] Add Windows Event Log integration (logon/logoff, privilege use)
 - [ ] Add encrypted log storage (AES-256 via Fernet)
+- [ ] Add encrypted ZIP with password
 - [ ] Add remote retrieval via encrypted channel (opt-in)
 - [ ] Add GUI viewer (`tkinter` or `PyQt`) for browsing logs offline
 - [ ] Add Windows Service mode (System-level persistence)
@@ -406,6 +541,8 @@ alexandria/
 - [ ] Add signed EXE for reduced AV false positives
 - [ ] Add automated test suite (`pytest`)
 - [ ] Add GitHub Actions CI for releases
+- [ ] Add SHA-256 verification tool in `export.bat`
+- [ ] Add marker file with expiration date
 
 ## FAQ
 
@@ -417,6 +554,14 @@ Technically, yes — it captures keystrokes. But it's **far more**: it captures 
 
 **Only with written authorization.** Deploying this on any system without explicit permission is illegal in most jurisdictions. This tool is designed for **authorized cybersecurity laboratory environments**.
 
+### How does auto-export know which USB to trust?
+
+It checks for a file named `ALEXANDRIA.md` with specific content. The content is defined in `config.json` and can be changed by the user. Only USBs with a matching marker will trigger export.
+
+### Can someone fake the marker file?
+
+Yes — anyone who knows the marker content can create a fake USB. This is why the marker content should be **kept secret** and treated like a password. For higher security, consider adding encryption or a signed certificate.
+
 ### Why not just use commercial EDR?
 
 Commercial EDR is closed-source and expensive. Alexandria is open, transparent, and educational — you can read every line of code and understand exactly what it does.
@@ -425,9 +570,9 @@ Commercial EDR is closed-source and expensive. Alexandria is open, transparent, 
 
 **Likely yes** on first run — PyInstaller binaries often trigger heuristic detection. The `install.bat` script automatically adds a Windows Defender exclusion. For other AV products, add the exclusion manually.
 
-### How long does one deployment last?
+### What if the USB is plugged in by mistake during the monitoring week?
 
-The designed duration is **7 days**, but Alexandria is unbounded — it runs until uninstalled. The 7-day model just provides a clean deployment/export/cleanup cycle.
+An empty or partial export will be created on the USB. This does not harm the ongoing monitoring. Simply disconnect the USB and continue.
 
 ### Can I run this on Linux or macOS?
 
@@ -462,7 +607,8 @@ Compare with the entry in `_hashes.sha256`.
 
 | Version | Date | Status | Highlights |
 |---|---|---|---|
-| **v2.0.0** | 2026-10-08 | Current | Clipboard, process, idle, USB, HTML report, SHA-256, ZIP |
+| **v3.0.0** | 2026-10-08 | Current | Auto-export with marker file, USB marking tool, trigger tracking |
+| v2.0.0 | 2026-10-08 | Superseded | Clipboard, process, idle, USB, HTML report, SHA-256, ZIP |
 | v1.0.0 | 2026-10-07 | Superseded | Initial release: keyboard, window, browser, system |
 | v0.9.0 | 2026-10-06 | Archived | Beta: single-instance, persistence, export |
 | v0.5.0 | 2026-10-05 | Archived | Prototype: keyboard capture only |
@@ -528,19 +674,34 @@ Copyright © 2026 Leo (Ilya Farahani).
 
 <div align="center">
 
-<img src="assets/alexandria-hero.svg" alt="Alexandria Activity Monitor" width="100%">
+<img src="assets/alexandria-hero.svg" alt="Alexandria Activity Monitor v3" width="100%">
 
 <br>
+
+<h1>⚡ Alexandria</h1>
 <h1 id="-فارسی">⚡ الکساندریا</h1>
-<p><strong>سیستم را پایش کن. فعالیت را ثبت کن. یکپارچگی را اثبات کن.</strong></p>
-<p>یک ابزار پایش فعالیت آزمایشگاهی، دوزبانه و حرفه‌ای، برای آموزش امنیت سایبری مجاز — از کیبورد و کلیپ‌بورد تا پایش پروسه‌ها و داشبورد HTML.</p>
+<p><strong>سیستم را پایش کن. فعالیت را ثبت کن. یکپارچگی را اثبات کن. خودکار خروجی بگیر.</strong></p>
+<p>یک ابزار پایش فعالیت آزمایشگاهی، دوزبانه و حرفه‌ای، برای آموزش امنیت سایبری مجاز — با خروجی خودکار روی فلش مجاز، ۹ نوع لاگ و داشبورد جرم‌شناسی HTML.</p>
 </div>
 
 ## درباره پروژه
 
 **الکساندریا** یک ابزار پایش فعالیت در سطح آزمایشگاهی است که برای **آموزش امنیت سایبری مجاز** طراحی شده. این ابزار به‌صورت بی‌صدا روی ویندوز اجرا می‌شود و تصویری جامع از فعالیت کاربر و سیستم ثبت می‌کند — سپس یک گزارش HTML حرفه‌ای با تأیید یکپارچگی SHA-256 و یک فایل ZIP فشرده تولید می‌کند.
 
-نام این ابزار از **کتابخانه‌ی افسانه‌ای اسکندریه** — بزرگترین گنجینه‌ی دانش دنیای باستان — الهام گرفته شده. همان اصل: **جمع‌آوری، حفظ و ارائه‌ی اطلاعات با یکپارچگی**.
+**جدید در نسخه ۳:** خروجی خودکار فقط با وصل کردن یک **فلش مجاز** — فلشی که فایل نشانه‌ی `ALEXANDRIA.md` با محتوای مشخص دارد — فعال می‌شود. هیچ دخالت دستی لازم نیست.
+
+نام این ابزار از **کتابخانه‌ی افسانه‌ای اسکندریه** — بزرگترین گنجینه‌ی دانش دنیای باستان — الهام گرفته شده.
+
+## جدید در نسخه ۳
+
+| ویژگی | توضیح |
+|--------|-------|
+| 🔌 **خروجی خودکار** | فلش مجاز را تشخیص می‌دهد و لاگ‌ها را خودکار کپی می‌کند |
+| 📄 **تشخیص فایل نشانه** | `ALEXANDRIA.md` با محتوای مشخص، نقش کلید مجاز را دارد |
+| 🛠 **ابزار علامت‌گذاری فلش** | `mark_usb.bat` هر فلشی را در یک کلیک مجاز می‌کند |
+| 📊 **گزارش تقویت‌شده** | داشبورد HTML حالا رویدادهای USB و آمار خروجی خودکار را نشان می‌دهد |
+| 🎯 **ردیابی منبع** | لاگ خروجی ثبت می‌کند که خودکار بوده یا دستی |
+| 🔒 **پیش‌فرض‌های امن‌تر** | فقط فلش‌هایی با نشانه‌ی معتبر می‌توانند خروجی بگیرند |
 
 ## چرا الکساندریا؟
 
@@ -549,7 +710,7 @@ Copyright © 2026 Leo (Ilya Farahani).
 ## این پروژه برای چه کسانی است؟
 
 - **دانشجویان امنیت سایبری** که مبانی پایش را یاد می‌گیرند
-- **مدرسان** که جرم‌شناسی دیجیتال و شناسایی Endpoint را تدریس می‌کنند
+- **مدرسان** که جرم‌شناسی دیجیتال تدریس می‌کنند
 - **تسترهای نفوذ** که می‌خواهند مکانیزم‌های پایداری را بفهمند
 - **تیم‌های دفاعی (Blue Team)** که می‌خواهند بدانند EDRها چه چیزی را ثبت می‌کنند
 - **پژوهشگران** که به یک پایه‌ی داده‌ی کنترل‌شده نیاز دارند
@@ -560,11 +721,13 @@ Copyright © 2026 Leo (Ilya Farahani).
 - پیاده‌سازی Persistence در ویندوز (Run Key + Scheduled Task)
 - ساخت سیستم لاگ thread-safe و چندمنظوره در پایتون
 - ثبت کیبورد در چند لی‌اوت (فارسی + انگلیسی) با کد VK
-- استخراج تاریخچه‌ی مرورگر از SQLite به‌صورت real-time
+- استخراج تاریخچه‌ی مرورگر از SQLite
 - پایش کلیپ‌بورد، پروسه‌ها، رویدادهای USB و حالت Idle
+- **تشخیص فلش مجاز با فایل نشانه**
+- **خروجی خودکار در زمان اتصال دستگاه مورد اعتماد**
 - تولید مانیفست SHA-256 برای شواهد جرم‌شناسی
 - ساخت داشبورد HTML دارک-مود با CSS خالص
-- فشرده‌سازی داده‌های جرم‌شناسی در ZIP
+- فشرده‌سازی داده‌ها در ZIP
 - نگاشت تکنیک‌ها به فریمورک MITRE ATT&CK
 - درک اقدامات دفاعی متناظر با هر تکنیک
 
@@ -578,7 +741,8 @@ Copyright © 2026 Leo (Ilya Farahani).
 | روش‌های Persistence | ۲ (Run Key + Scheduled Task) |
 | یکپارچگی | مانیفست SHA-256 برای هر فایل |
 | قالب گزارش | داشبورد HTML + آرشیو ZIP |
-| تنظیمات | JSON (۱۲ گزینه) |
+| تنظیمات | JSON (۱۶ گزینه) |
+| خروجی خودکار | فایل نشانه `ALEXANDRIA.md` |
 | Single-instance | Windows Mutex |
 | نویسنده | لئو / ایلیا فراهانی |
 
@@ -586,74 +750,90 @@ Copyright © 2026 Leo (Ilya Farahani).
 
 | # | قابلیت | توضیح | کلید تنظیمات |
 |---|---------|--------|---------------|
-| ۱ | ⌨️ **کی‌لاگر** | CHAR (زبان مبدأ) + EN (فیزیکی) + VK (کد ویندوز) | همیشه فعال |
-| ۲ | 🪟 **پایش پنجره فعال** | نام پروسه + عنوان پنجره در هر تغییر فوکوس | همیشه فعال |
-| ۳ | 🌐 **استخراج تاریخچه مرورگر** | تاریخچه Chrome + Edge هر ۵ دقیقه | `browser_extract_interval` |
+| ۱ | ⌨️ **کی‌لاگر** | CHAR + EN + VK | همیشه فعال |
+| ۲ | 🪟 **پایش پنجره فعال** | نام پروسه + عنوان پنجره | همیشه فعال |
+| ۳ | 🌐 **استخراج تاریخچه مرورگر** | Chrome + Edge هر ۵ دقیقه | `browser_extract_interval` |
 | ۴ | 📋 **پایش کلیپ‌بورد** | ثبت هر تغییر با پیش‌نمایش ۵۰۰ کاراکتری | `enable_clipboard` |
 | ۵ | ⚙️ **پایش اجرای پروسه** | ثبت هر پروسه‌ی جدید با PID + کاربر | `enable_process_monitor` |
-| ۶ | 💤 **تشخیص Idle** | فیلتر کیبورد در زمان بیکاری کاربر | `enable_idle_detection` |
-| ۷ | 🔌 **پایش رویداد USB** | ردیابی اتصال/قطع درایوهای قابل جابجایی | `enable_usb_events` |
-| ۸ | 🖥️ **جمع‌آوری اطلاعات سیستم** | Hostname، OS، CPU، RAM، کاربر هر ۶ ساعت | `system_info_interval` |
-| ۹ | 📊 **تولید گزارش HTML** | داشبورد دارک-مود با آمار و نمودار میله‌ای | `enable_html_report` |
+| ۶ | 💤 **تشخیص Idle** | فیلتر کیبورد در زمان بیکاری | `enable_idle_detection` |
+| ۷ | 🔌 **پایش رویداد USB** | ردیابی اتصال/قطع درایو | `enable_usb_events` |
+| ۸ | 🖥️ **اطلاعات سیستم** | Hostname، OS، CPU، RAM هر ۶ ساعت | `system_info_interval` |
+| ۹ | 📊 **گزارش HTML** | داشبورد دارک-مود با آمار و نمودار | `enable_html_report` |
+| ۱۰ | 🎯 **خروجی خودکار با فلش مجاز** | تشخیص `ALEXANDRIA.md` و export خودکار | `auto_export_enabled` |
 
-## جریان استقرار
+## قابلیت خروجی خودکار
+
+### 🎯 چطور کار می‌کند
 
 ```text
-روز ۰ — آماده‌سازی
-    └── ساخت EXE و کپی ۷ فایل روی فلش
-
-روز ۱ — نصب (اتصال اول فلش)
-    ├── راست‌کلیک install.bat → Run as administrator
-    ├── Alexandria خودکار در پس‌زمینه اجرا می‌شود
-    └── فلش جدا می‌شود — دیگر لازم نیست
-
-روز ۱ تا ۷ — اجرای بی‌صدا
-    ├── ۹ نوع لاگ به‌طور مداوم ثبت می‌شود
-    ├── پس از هر ری‌استارت خودکار ادامه می‌یابد
-    └── چرخش لاگ از فایل‌های غول جلوگیری می‌کند
-
-روز ۷ — خروجی (اتصال دوم فلش)
-    ├── دابل‌کلیک export.bat از روی فلش
-    ├── گزارش HTML ساخته می‌شود
-    ├── مانیفست SHA-256 تولید می‌شود
-    └── فایل ZIP روی فلش قرار می‌گیرد
-
-بعد از پروژه — پاک‌سازی
-    ├── راست‌کلیک uninstall.bat → Run as administrator
-    └── تمام ردپاها پاک می‌شوند
+┌────────────────────────────────────────────────────────────────┐
+│                    جریان خروجی خودکار                          │
+├────────────────────────────────────────────────────────────────┤
+│                                                                │
+│  ۱. توسعه‌دهنده با mark_usb.bat فلش را علامت می‌زند             │
+│     └── فایل ALEXANDRIA.md با محتوای مخفی می‌سازد               │
+│                                                                │
+│  ۲. الکساندریا هر ۵ ثانیه درایوها را چک می‌کند                  │
+│     └── با psutil + GetDriveTypeW                              │
+│                                                                │
+│  ۳. وقتی فلش وصل شود:                                          │
+│     ├── چک فایل ALEXANDRIA.md                                   │
+│     ├── خواندن محتوا                                            │
+│     ├── مقایسه با config.auto_export_marker_content            │
+│     └── اگر مطابق بود → خروجی خودکار                            │
+│                                                                │
+│  ۴. خروجی خودکار:                                              │
+│     ├── کپی همه‌ی لاگ‌ها به USB:\logs_export\                    │
+│     ├── تولید گزارش HTML                                       │
+│     ├── ساخت مانیفست SHA-256                                    │
+│     ├── ساخت آرشیو ZIP                                          │
+│     └── ثبت رویداد در usb_*.txt                                 │
+│                                                                │
+│  ۵. Fallback دستی:                                             │
+│     └── export.bat همچنان کار می‌کند اگر خودکار شکست خورد       │
+│                                                                │
+└────────────────────────────────────────────────────────────────┘
 ```
 
-## مفاهیم کلیدی امنیتی
+### 🔑 تنظیمات
 
-### ۱. Persistence از طریق Run Key رجیستری
+در `config.json`:
 
-**چرا مهم است:** Run Key یک مکانیزم کلاسیک Persistence است که هم نرم‌افزارهای قانونی و هم بدافزارها از آن استفاده می‌کنند.
+```json
+{
+  "auto_export_enabled": true,
+  "auto_export_marker_file": "ALEXANDRIA.md",
+  "auto_export_marker_content": "ALEXANDRIA-AUTHORIZED-EXPORT-KEY-v3-2026",
+  "auto_export_check_interval": 5
+}
+```
 
-**چگونه دفاع کنیم:** تغییرات Run Key را با Sysmon Event ID 13 پایش کنید.
+### 🛠 علامت‌گذاری فلش
 
-### ۲. Persistence از طریق Scheduled Task
+۱. `mark_usb.bat` را در ریشه‌ی فلش کپی کن
+۲. دابل‌کلیک کن
+۳. فایل `ALEXANDRIA.md` با محتوای مجاز ساخته می‌شود
+۴. حالا فلش در هر سیستمی که Alexandria v3 دارد، خروجی خودکار می‌گیرد
 
-**چرا مهم است:** Taskها پایدارتر از Run Key هستند چون Fast Startup را تحمل می‌کنند.
+### 🔒 ویژگی‌های امنیتی
 
-**چگونه دفاع کنیم:** دستور `schtasks /query /fo LIST /v` را دوره‌ای اجرا کنید و روی Taskهای ONLOGON ناشناس هشدار بگذارید.
+| ویژگی | مقدار |
+|--------|-------|
+| نام فایل نشانه | `ALEXANDRIA.md` |
+| مقایسه محتوا | مطابقت دقیق اجباری |
+| حساس به حروف بزرگ/کوچک | بله |
+| چند نشانه | فقط یک فایل چک می‌شود |
+| Override دستی | ممکن نیست (تنظیمات لازم است) |
+| فلش بدون نشانه | بی‌صدا نادیده گرفته می‌شود |
+| رویدادهای لاگ‌شده | همه‌ی اتصال/قطع‌های USB |
 
-### ۳. یکپارچگی با مانیفست SHA-256
+### ⚠️ نکات
 
-**چرا مهم است:** لاگ‌ها اگر قابل دستکاری باشند، به‌عنوان شواهد بی‌ارزش هستند.
-
-**چگونه دفاع کنیم:** همیشه قبل از پذیرش شواهد در دادگاه، SHA-256 را بررسی کنید.
-
-### ۴. پایش کلیپ‌بورد
-
-**چرا مهم است:** کاربران رمز و توکن را بدون فکر کردن کپی می‌کنند.
-
-**چگونه دفاع کنیم:** از clipboard manager با auto-clear استفاده کنید.
-
-### ۵. ثبت کیبورد در چند لی‌اوت
-
-**چرا مهم است:** کی‌لاگری که فقط QWERTY را می‌فهمد، فارسی و عربی و ... را از دست می‌دهد.
-
-**چگونه دفاع کنیم:** تشخیص مبتنی بر رفتار به‌جای امضا.
+- **خروجی روز اول:** اگر فلش در زمان اجرای `install.bat` وصل باشد، یک `logs_export` خالی ساخته می‌شود. بی‌ضرر است.
+- **خروجی دوباره:** فلش باید جدا و دوباره وصل شود تا export دوباره فعال شود.
+- **فلش گم‌شده:** فلشی که `ALEXANDRIA.md` ندارد نمی‌تواند export را تریگر کند.
+- **فلش format شده:** فایل نشانه از بین می‌رود. باید دوباره mark کنی.
+- **قابلیت انتقال:** فایل نشانه فقط در سیستم‌هایی که Alexandria نصب است تریگر می‌شود.
 
 ## نگاشت MITRE ATT&CK
 
@@ -666,6 +846,44 @@ Copyright © 2026 Leo (Ilya Farahani).
 | Process Discovery | **T1057** | پایش پروسه | حسابرسی ساخت پروسه |
 | System Info Discovery | **T1082** | جمع‌آوری اطلاعات سیستم | پایش baseline |
 | File Discovery | **T1083** | اسکن تاریخچه مرورگر | حسابرسی فایل‌سیستم |
+| **Exfiltration Over Physical Medium** | **T1052.001** | **خروجی خودکار به USB** | DLP، کنترل پورت USB |
+
+> الکساندریا **۸ تکنیک** را در تاکتیک‌های **Collection**، **Persistence**، **Discovery** و **Exfiltration** نشان می‌دهد. هر تکنیک به یک کنترل دفاعی نگاشت شده — این ارزش آموزشی اصلی است.
+
+## جریان استقرار
+
+```text
+روز ۰ — آماده‌سازی
+    ├── ساخت EXE با PyInstaller
+    ├── اجرای mark_usb.bat روی فلش
+    ├── کپی ۸ فایل روی فلش
+    └── تأیید محتوای ALEXANDRIA.md
+
+روز ۱ — نصب (اتصال اول فلش)
+    ├── راست‌کلیک install.bat → Run as administrator
+    ├── Defender استثنا می‌شود
+    ├── Run Key + Scheduled Task ساخته می‌شود
+    ├── (اختیاری) یک export خالی اولیه
+    └── فلش جدا می‌شود
+
+روز ۱ تا ۷ — اجرای بی‌صدا
+    ├── ۹ نوع لاگ به‌طور مداوم
+    ├── پس از هر بوت خودکار ادامه می‌یابد
+    ├── Auto-export monitor هر ۵ ثانیه چک می‌کند
+    └── چرخش لاگ فعال
+
+روز ۷ — خروجی خودکار (اتصال دوم فلش)
+    ├── فقط فلش مجاز را وصل کن
+    ├── Alexandria فایل ALEXANDRIA.md را می‌بیند
+    ├── گزارش HTML ساخته می‌شود
+    ├── مانیفست SHA-256 تولید می‌شود
+    ├── فایل ZIP روی فلش قرار می‌گیرد
+    └── فلش با همه‌ی شواهد جدا می‌شود
+
+بعد از پروژه — پاک‌سازی
+    ├── راست‌کلیک uninstall.bat → Run as administrator
+    └── تمام ردپاها پاک می‌شوند
+```
 
 ## سؤالات متداول
 
@@ -675,7 +893,15 @@ Copyright © 2026 Leo (Ilya Farahani).
 
 ### آیا این قانونی است؟
 
-**فقط با مجوز کتبی.** استقرار این ابزار روی هر سیستمی بدون اجازه‌ی صریح در بیشتر کشورها غیرقانونی است. این ابزار برای **محیط آزمایشگاهی امنیت سایبری مجاز** طراحی شده.
+**فقط با مجوز کتبی.** استقرار این ابزار روی هر سیستمی بدون اجازه‌ی صریح در بیشتر کشورها غیرقانونی است.
+
+### خروجی خودکار چطور می‌فهمد به کدام فلش اعتماد کند؟
+
+فایل `ALEXANDRIA.md` را با محتوای مشخص در `config.json` چک می‌کند. فقط فلشی با نشانه‌ی مطابق می‌تواند export را تریگر کند.
+
+### آیا کسی می‌تواند فایل نشانه را جعل کند؟
+
+بله — هر کسی که محتوای نشانه را بداند. به همین دلیل محتوای نشانه باید **مخفی** بماند و مثل رمز رفتار شود. برای امنیت بالاتر، رمزنگاری یا امضای دیجیتال اضافه کن.
 
 ### چرا از EDR تجاری استفاده نکنیم؟
 
@@ -683,7 +909,11 @@ EDR تجاری closed-source و گران است. الکساندریا باز، �
 
 ### آیا آنتی‌ویروس `alexandria.exe` را تشخیص می‌دهد؟
 
-**احتمالاً بله** در اولین اجرا. اسکریپت `install.bat` خودکار پوشه را در Windows Defender استثنا می‌کند. برای سایر AVها، استثنا را دستی اضافه کن.
+**احتمالاً بله** در اولین اجرا. اسکریپت `install.bat` خودکار پوشه را استثنا می‌کند.
+
+### اگر فلش اشتباهاً در طول هفته وصل شود چه می‌شود؟
+
+یک export خالی یا ناقص روی فلش ساخته می‌شود. این به پایش ادامه‌دار آسیب نمی‌زند. فقط فلش را جدا کن و ادامه بده.
 
 ### آیا روی لینوکس یا مک اجرا می‌شود؟
 
@@ -691,34 +921,17 @@ EDR تجاری closed-source و گران است. الکساندریا باز، �
 
 ### آیا برای دوره‌ی خودم می‌توانم تغییرش دهم؟
 
-بله، تحت مجوز MIT. ذکر منبع قدردانی می‌شود ولی الزامی نیست.
-
-## منابع مرتبط
-
-- [Sysinternals Sysmon](https://docs.microsoft.com/en-us/sysinternals/downloads/sysmon)
-- [MITRE ATT&CK](https://attack.mitre.org/)
-- [OWASP Logging Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/Logging_Cheat_Sheet.html)
-- [pynput Documentation](https://pynput.readthedocs.io/)
-- [psutil Documentation](https://psutil.readthedocs.io/)
-- [PyInstaller Manual](https://pyinstaller.org/)
+بله، تحت مجوز MIT.
 
 ## تاریخچه نسخه‌ها
 
 | نسخه | تاریخ | وضعیت | ویژگی‌های کلیدی |
 |---|---|---|---|
-| **v2.0.0** | 2026-10-08 | فعلی | کلیپ‌بورد، پروسه، Idle، USB، گزارش HTML، SHA-256، ZIP |
+| **v3.0.0** | 2026-10-08 | فعلی | خروجی خودکار با فایل نشانه، ابزار mark، ردیابی منبع |
+| v2.0.0 | 2026-10-08 | جانشین‌شده | کلیپ‌بورد، پروسه، Idle، USB، HTML، SHA-256، ZIP |
 | v1.0.0 | 2026-10-07 | جانشین‌شده | نسخه اولیه |
-| v0.9.0 | 2026-10-06 | آرشیو | بتا: single-instance، persistence، export |
-| v0.5.0 | 2026-10-05 | آرشیو | نمونه اولیه: فقط کیبورد |
-
-## مشارکت
-
-این پروژه عمدتاً یک اثر آموزشی است، اما مشارکت در این زمینه‌ها خوش‌آمد است:
-
-- **رفع باگ** — با مراحل بازتولید واضح
-- **مستندسازی** — غلط تایپی، شفاف‌سازی، ترجمه
-- **ایده‌های دفاعی** — قواعد شناسایی، اقدامات متقابل
-- **بهبودهای اخلاقی** — دسترس‌پذیری، شفافیت
+| v0.9.0 | 2026-10-06 | آرشیو | بتا |
+| v0.5.0 | 2026-10-05 | آرشیو | نمونه اولیه |
 
 ## رفع مسئولیت
 
@@ -730,7 +943,7 @@ EDR تجاری closed-source و گران است. الکساندریا باز، �
 ۲. آن را **فقط** روی سیستم هدف مجاز مشخص‌شده مستقر می‌کنید.
 ۳. تمام داده‌های جمع‌آوری‌شده را بعد از ارزیابی پروژه **نابود می‌کنید**.
 ۴. از آن برای آسیب، جاسوسی یا نظارت بدون رضایت **استفاده نمی‌کنید**.
-۵. می‌دانید که استفاده‌ی غیرمجاز ممکن است **قوانین جرایم رایانه‌ای** را در حوزه‌ی قضایی شما نقض کند.
+۵. می‌دانید که استفاده‌ی غیرمجاز ممکن است **قوانین جرایم رایانه‌ای** را نقض کند.
 
 **نویسنده و مشارکت‌کنندگان هیچ مسئولیتی در قبال سوءاستفاده، خسارت، از دست رفتن داده، اختلال سرویس یا پیامدهای قانونی ندارند.**
 
