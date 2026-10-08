@@ -527,6 +527,10 @@ Copyright © 2026 Leo (Ilya Farahani).
 ---
 
 <div align="center">
+
+<img src="assets/alexandria-hero.svg" alt="Alexandria Activity Monitor" width="100%">
+
+<br>
 <h1 id="-فارسی">⚡ الکساندریا</h1>
 <p><strong>سیستم را پایش کن. فعالیت را ثبت کن. یکپارچگی را اثبات کن.</strong></p>
 <p>یک ابزار پایش فعالیت آزمایشگاهی، دوزبانه و حرفه‌ای، برای آموزش امنیت سایبری مجاز — از کیبورد و کلیپ‌بورد تا پایش پروسه‌ها و داشبورد HTML.</p>
