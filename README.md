@@ -6,8 +6,6 @@
 
 <h1>⚡ Alexandria</h1>
 
-<h1>⚡ Alexandria</h1>
-
 <p><strong>Monitor the system. Capture the activity. Prove the integrity. Export automatically.</strong></p>
 <p>A bilingual, laboratory-grade activity monitor for authorized cybersecurity education — with auto-export on authorized USB drives, 9 log types, and professional HTML forensics dashboards.</p>
 
@@ -678,7 +676,7 @@ Copyright © 2026 Leo (Ilya Farahani).
 
 <br>
 
-<h1>⚡ Alexandria</h1>
+
 <h1 id="-فارسی">⚡ الکساندریا</h1>
 <p><strong>سیستم را پایش کن. فعالیت را ثبت کن. یکپارچگی را اثبات کن. خودکار خروجی بگیر.</strong></p>
 <p>یک ابزار پایش فعالیت آزمایشگاهی، دوزبانه و حرفه‌ای، برای آموزش امنیت سایبری مجاز — با خروجی خودکار روی فلش مجاز، ۹ نوع لاگ و داشبورد جرم‌شناسی HTML.</p>
