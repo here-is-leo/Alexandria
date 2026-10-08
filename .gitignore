@@ -1,0 +1,44 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+.venv/
+
+# PyInstaller
+build/
+dist/
+*.spec
+*.manifest
+
+# Compiled executables
+*.exe
+*.dll
+*.pyd
+
+# Logs and exports
+logs/
+logs_export/
+*_export.zip
+*_hashes.sha256
+keylog_*.txt
+activity_*.txt
+browser_*.txt
+clipboard_*.txt
+process_*.txt
+usb_*.txt
+system_*.txt
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
