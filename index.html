@@ -1,0 +1,1420 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr" id="htmlRoot">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Alexandria — Laboratory Activity Monitor</title>
+<meta name="description" content="A bilingual, laboratory-grade activity monitor for authorized cybersecurity education.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&family=Vazirmatn:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="icon" href="assets/alexandria-hero.svg" type="image/svg+xml">
+<style>
+:root {
+  --bg-0: #05070d;
+  --bg-1: #0a0e14;
+  --bg-2: #0d1117;
+  --bg-3: #161b22;
+  --border: #21262d;
+  --border-bright: #30363d;
+  --text: #e6edf3;
+  --text-dim: #8b949e;
+  --text-dimmer: #6e7681;
+  --cyan: #5ee7ff;
+  --blue: #58a6ff;
+  --purple: #a78bfa;
+  --pink: #ff6bd6;
+  --green: #7ee787;
+  --orange: #ffa657;
+  --grad-main: linear-gradient(135deg, #5ee7ff 0%, #7c5cff 50%, #ff6bd6 100%);
+  --grad-title: linear-gradient(135deg, #58a6ff 0%, #a78bfa 50%, #5ee7ff 100%);
+  --font-en: 'Inter', system-ui, sans-serif;
+  --font-fa: 'Vazirmatn', 'Tahoma', sans-serif;
+  --font-mono: 'JetBrains Mono', 'Courier New', monospace;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg-0);
+  color: var(--text);
+  font-family: var(--font-en);
+  line-height: 1.6;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+html[dir="rtl"] body { font-family: var(--font-fa); }
+
+/* Animated background */
+.bg-orbs {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+}
+.bg-orbs::before,
+.bg-orbs::after {
+  content: '';
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(120px);
+  opacity: 0.15;
+  animation: float 20s ease-in-out infinite;
+}
+.bg-orbs::before {
+  width: 600px; height: 600px;
+  background: var(--cyan);
+  top: -200px; left: -200px;
+}
+.bg-orbs::after {
+  width: 500px; height: 500px;
+  background: var(--purple);
+  bottom: -150px; right: -150px;
+  animation-delay: -10s;
+}
+.bg-grid {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background-image:
+    linear-gradient(rgba(48,54,61,0.3) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(48,54,61,0.3) 1px, transparent 1px);
+  background-size: 60px 60px;
+  mask-image: radial-gradient(ellipse at center, black 30%, transparent 75%);
+  -webkit-mask-image: radial-gradient(ellipse at center, black 30%, transparent 75%);
+  opacity: 0.4;
+}
+@keyframes float {
+  0%,100% { transform: translate(0,0) scale(1); }
+  50% { transform: translate(80px,60px) scale(1.1); }
+}
+
+/* Container */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+/* Navigation */
+nav {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  background: rgba(5,7,13,0.75);
+  border-bottom: 1px solid var(--border);
+  padding: 16px 0;
+}
+.nav-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+.nav-brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+  color: var(--text);
+  font-weight: 800;
+  font-size: 20px;
+  letter-spacing: -0.5px;
+}
+.nav-brand-icon {
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg-3);
+  border: 1px solid var(--border-bright);
+  border-radius: 10px;
+  position: relative;
+}
+.nav-brand-icon svg { width: 20px; height: 20px; }
+.nav-brand-icon::after {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border-radius: 10px;
+  background: var(--grad-main);
+  opacity: 0.4;
+  z-index: -1;
+  filter: blur(8px);
+}
+.nav-brand-version {
+  font-size: 11px;
+  color: var(--cyan);
+  background: rgba(94,231,255,0.1);
+  border: 1px solid rgba(94,231,255,0.3);
+  padding: 2px 8px;
+  border-radius: 6px;
+  font-family: var(--font-mono);
+  font-weight: 600;
+}
+.nav-links {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  list-style: none;
+}
+.nav-links a {
+  color: var(--text-dim);
+  text-decoration: none;
+  padding: 8px 14px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.2s;
+}
+.nav-links a:hover {
+  color: var(--text);
+  background: var(--bg-3);
+}
+.lang-toggle {
+  display: flex;
+  gap: 4px;
+  background: var(--bg-3);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 4px;
+}
+.lang-toggle button {
+  background: transparent;
+  border: none;
+  color: var(--text-dim);
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 600;
+  font-family: inherit;
+  transition: all 0.2s;
+}
+.lang-toggle button.active {
+  background: var(--cyan);
+  color: var(--bg-0);
+}
+.lang-toggle button:hover:not(.active) {
+  color: var(--text);
+}
+
+/* Hero */
+.hero {
+  padding: 100px 0 80px;
+  text-align: center;
+  position: relative;
+}
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  background: rgba(94,231,255,0.08);
+  border: 1px solid rgba(94,231,255,0.25);
+  border-radius: 100px;
+  font-size: 13px;
+  color: var(--cyan);
+  margin-bottom: 28px;
+  font-weight: 500;
+}
+.hero-badge-dot {
+  width: 6px;
+  height: 6px;
+  background: var(--cyan);
+  border-radius: 50%;
+  box-shadow: 0 0 10px var(--cyan);
+  animation: pulse 2s infinite;
+}
+@keyframes pulse {
+  0%,100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(1.3); }
+}
+.hero h1 {
+  font-size: clamp(48px, 8vw, 96px);
+  font-weight: 900;
+  line-height: 1;
+  letter-spacing: -3px;
+  background: var(--grad-title);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 24px;
+}
+html[dir="rtl"] .hero h1 { letter-spacing: 0; }
+.hero-subtitle {
+  font-size: clamp(18px, 2.5vw, 24px);
+  color: var(--text-dim);
+  max-width: 720px;
+  margin: 0 auto 16px;
+  font-weight: 400;
+  line-height: 1.5;
+}
+.hero-tagline {
+  font-size: 15px;
+  color: var(--text-dimmer);
+  margin-bottom: 40px;
+  font-weight: 300;
+}
+.hero-tagline span {
+  color: var(--cyan);
+  font-weight: 500;
+}
+.hero-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-bottom: 60px;
+}
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 24px;
+  border-radius: 12px;
+  font-size: 15px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.25s;
+  cursor: pointer;
+  border: none;
+  font-family: inherit;
+}
+.btn-primary {
+  background: var(--grad-main);
+  color: var(--bg-0);
+  box-shadow: 0 8px 24px rgba(94,231,255,0.25);
+}
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 32px rgba(94,231,255,0.4);
+}
+.btn-secondary {
+  background: var(--bg-3);
+  color: var(--text);
+  border: 1px solid var(--border-bright);
+}
+.btn-secondary:hover {
+  background: var(--border);
+  transform: translateY(-2px);
+}
+.btn svg { width: 18px; height: 18px; }
+
+/* Hero terminal */
+.hero-terminal {
+  max-width: 780px;
+  margin: 0 auto;
+  background: var(--bg-1);
+  border: 1px solid var(--border-bright);
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.5), 0 0 0 1px rgba(94,231,255,0.05);
+  text-align: left;
+}
+html[dir="rtl"] .hero-terminal { text-align: right; direction: ltr; }
+.terminal-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 16px;
+  background: var(--bg-2);
+  border-bottom: 1px solid var(--border);
+}
+.terminal-dots {
+  display: flex;
+  gap: 6px;
+}
+.terminal-dots span {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+}
+.terminal-dots span:nth-child(1) { background: #ff5f56; }
+.terminal-dots span:nth-child(2) { background: #ffbd2e; }
+.terminal-dots span:nth-child(3) { background: #27c93f; }
+.terminal-title {
+  margin-left: auto;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--text-dimmer);
+}
+html[dir="rtl"] .terminal-title { margin-left: 0; margin-right: auto; }
+.terminal-body {
+  padding: 24px;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  line-height: 1.8;
+}
+.term-line { display: block; white-space: pre-wrap; word-break: break-word; }
+.term-prompt { color: var(--green); }
+.term-cmd { color: var(--text); }
+.term-flag { color: var(--blue); }
+.term-arg { color: var(--orange); }
+.term-success { color: var(--green); }
+.term-info { color: var(--cyan); }
+.term-dim { color: var(--text-dimmer); }
+.term-cursor {
+  display: inline-block;
+  width: 8px;
+  height: 14px;
+  background: var(--cyan);
+  margin-left: 4px;
+  vertical-align: middle;
+  animation: blink 1.2s infinite;
+}
+@keyframes blink {
+  0%,49% { opacity: 1; }
+  50%,100% { opacity: 0; }
+}
+
+/* Section base */
+section {
+  padding: 100px 0;
+  position: relative;
+}
+.section-label {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--cyan);
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  margin-bottom: 16px;
+  font-weight: 500;
+}
+.section-title {
+  font-size: clamp(32px, 4vw, 48px);
+  font-weight: 800;
+  letter-spacing: -1.5px;
+  margin-bottom: 16px;
+  line-height: 1.1;
+}
+html[dir="rtl"] .section-title { letter-spacing: 0; }
+.section-desc {
+  font-size: 17px;
+  color: var(--text-dim);
+  max-width: 680px;
+  margin-bottom: 56px;
+  line-height: 1.6;
+}
+.center { text-align: center; }
+.center .section-desc { margin-left: auto; margin-right: auto; }
+
+/* Stats grid */
+.stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 16px;
+  margin-bottom: 80px;
+}
+.stat-card {
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 24px 20px;
+  text-align: center;
+  transition: all 0.3s;
+  position: relative;
+  overflow: hidden;
+}
+.stat-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--grad-main);
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+.stat-card:hover {
+  border-color: var(--border-bright);
+  transform: translateY(-4px);
+}
+.stat-card:hover::before { opacity: 0.03; }
+.stat-value {
+  font-size: 36px;
+  font-weight: 800;
+  background: var(--grad-title);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  line-height: 1;
+  margin-bottom: 8px;
+  position: relative;
+}
+.stat-label {
+  font-size: 13px;
+  color: var(--text-dim);
+  font-weight: 500;
+  position: relative;
+}
+
+/* Features grid */
+.features {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 20px;
+}
+.feature {
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 28px;
+  transition: all 0.3s;
+  position: relative;
+  overflow: hidden;
+}
+.feature::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: var(--grad-main);
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+.feature:hover {
+  border-color: var(--border-bright);
+  transform: translateY(-4px);
+  box-shadow: 0 12px 32px rgba(0,0,0,0.3);
+}
+.feature:hover::before { opacity: 1; }
+.feature-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
+  background: rgba(94,231,255,0.08);
+  border: 1px solid rgba(94,231,255,0.2);
+}
+.feature-icon svg { width: 24px; height: 24px; }
+.feature h3 {
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 10px;
+  letter-spacing: -0.3px;
+}
+.feature p {
+  font-size: 14px;
+  color: var(--text-dim);
+  line-height: 1.6;
+}
+.feature-tag {
+  display: inline-block;
+  margin-top: 14px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--cyan);
+  background: rgba(94,231,255,0.08);
+  border: 1px solid rgba(94,231,255,0.2);
+  padding: 3px 10px;
+  border-radius: 6px;
+  font-weight: 500;
+}
+
+/* Auto-export highlight */
+.auto-export {
+  background: linear-gradient(180deg, var(--bg-0) 0%, var(--bg-1) 50%, var(--bg-0) 100%);
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+.flow-diagram {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
+  margin-top: 40px;
+}
+.flow-step {
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 28px 24px;
+  text-align: center;
+  position: relative;
+  transition: all 0.3s;
+}
+.flow-step:hover {
+  border-color: var(--cyan);
+  transform: translateY(-4px);
+  box-shadow: 0 12px 32px rgba(94,231,255,0.1);
+}
+.flow-step-number {
+  position: absolute;
+  top: -14px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 32px;
+  height: 32px;
+  background: var(--grad-main);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 14px;
+  color: var(--bg-0);
+  box-shadow: 0 4px 12px rgba(94,231,255,0.4);
+}
+.flow-step-icon {
+  width: 56px;
+  height: 56px;
+  margin: 8px auto 16px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(94,231,255,0.05);
+  border: 1px solid rgba(94,231,255,0.15);
+}
+.flow-step-icon svg { width: 28px; height: 28px; }
+.flow-step h4 {
+  font-size: 15px;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+.flow-step p {
+  font-size: 13px;
+  color: var(--text-dim);
+  line-height: 1.5;
+}
+
+/* Code block */
+.code-block {
+  background: var(--bg-1);
+  border: 1px solid var(--border-bright);
+  border-radius: 14px;
+  overflow: hidden;
+  margin-top: 32px;
+  text-align: left;
+  direction: ltr;
+}
+.code-header {
+  padding: 12px 20px;
+  background: var(--bg-2);
+  border-bottom: 1px solid var(--border);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--text-dim);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.code-header::before {
+  content: '● config.json';
+  color: var(--orange);
+}
+.code-body {
+  padding: 24px;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  line-height: 1.8;
+  overflow-x: auto;
+  color: var(--text-dim);
+}
+.code-body .k { color: var(--cyan); }
+.code-body .s { color: var(--green); }
+.code-body .n { color: var(--orange); }
+.code-body .b { color: var(--purple); }
+
+/* MITRE section */
+.mitre-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 14px;
+}
+.mitre-item {
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 20px;
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+  transition: all 0.3s;
+}
+.mitre-item:hover {
+  border-color: var(--purple);
+  transform: translateX(4px);
+}
+html[dir="rtl"] .mitre-item:hover { transform: translateX(-4px); }
+.mitre-id {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--purple);
+  background: rgba(167,139,250,0.1);
+  border: 1px solid rgba(167,139,250,0.3);
+  padding: 4px 8px;
+  border-radius: 6px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.mitre-info h4 {
+  font-size: 14px;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+.mitre-info p {
+  font-size: 13px;
+  color: var(--text-dim);
+  line-height: 1.4;
+}
+
+/* FAQ */
+.faq-list {
+  max-width: 800px;
+  margin: 0 auto;
+}
+.faq-item {
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  margin-bottom: 12px;
+  overflow: hidden;
+  transition: all 0.3s;
+}
+.faq-item[open] {
+  border-color: var(--border-bright);
+}
+.faq-item summary {
+  padding: 20px 24px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 15px;
+  list-style: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  transition: color 0.2s;
+}
+.faq-item summary::-webkit-details-marker { display: none; }
+.faq-item summary::after {
+  content: '+';
+  color: var(--cyan);
+  font-size: 24px;
+  font-weight: 300;
+  transition: transform 0.3s;
+  flex-shrink: 0;
+}
+.faq-item[open] summary::after {
+  transform: rotate(45deg);
+}
+.faq-item summary:hover { color: var(--cyan); }
+.faq-answer {
+  padding: 0 24px 20px;
+  color: var(--text-dim);
+  font-size: 14px;
+  line-height: 1.7;
+}
+.faq-answer code {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  background: var(--bg-1);
+  border: 1px solid var(--border);
+  padding: 2px 6px;
+  border-radius: 4px;
+  color: var(--cyan);
+}
+
+/* CTA / Download */
+.cta {
+  text-align: center;
+  padding: 80px 40px;
+  background: var(--bg-2);
+  border: 1px solid var(--border-bright);
+  border-radius: 24px;
+  position: relative;
+  overflow: hidden;
+  margin: 60px 0;
+}
+.cta::before {
+  content: '';
+  position: absolute;
+  inset: -50%;
+  background: radial-gradient(circle at center, rgba(94,231,255,0.15) 0%, transparent 50%);
+  animation: rotate 20s linear infinite;
+}
+@keyframes rotate {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+.cta > * { position: relative; z-index: 1; }
+.cta h2 {
+  font-size: clamp(28px, 4vw, 42px);
+  font-weight: 800;
+  margin-bottom: 16px;
+  letter-spacing: -1px;
+}
+.cta p {
+  color: var(--text-dim);
+  font-size: 17px;
+  max-width: 560px;
+  margin: 0 auto 32px;
+}
+
+/* Footer */
+footer {
+  border-top: 1px solid var(--border);
+  padding: 60px 0 40px;
+  margin-top: 80px;
+}
+.footer-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr;
+  gap: 40px;
+  margin-bottom: 40px;
+}
+.footer-brand h3 {
+  font-size: 22px;
+  font-weight: 800;
+  margin-bottom: 12px;
+  letter-spacing: -0.5px;
+  background: var(--grad-title);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.footer-brand p {
+  color: var(--text-dim);
+  font-size: 14px;
+  line-height: 1.6;
+  max-width: 320px;
+}
+.footer-col h4 {
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: var(--text-dimmer);
+  margin-bottom: 16px;
+  font-weight: 600;
+}
+.footer-col ul { list-style: none; }
+.footer-col li { margin-bottom: 10px; }
+.footer-col a {
+  color: var(--text-dim);
+  text-decoration: none;
+  font-size: 14px;
+  transition: color 0.2s;
+}
+.footer-col a:hover { color: var(--cyan); }
+.footer-bottom {
+  padding-top: 32px;
+  border-top: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px;
+  font-size: 13px;
+  color: var(--text-dimmer);
+}
+.footer-legal {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+.footer-legal span {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .nav-links { display: none; }
+  .hero { padding: 60px 0 40px; }
+  section { padding: 60px 0; }
+  .footer-grid { grid-template-columns: 1fr 1fr; }
+  .footer-brand { grid-column: 1 / -1; }
+  .cta { padding: 48px 24px; }
+  .terminal-body { padding: 16px; font-size: 12px; }
+}
+
+/* Reveal animation */
+.reveal {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.8s, transform 0.8s;
+}
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Language visibility */
+[data-lang] { display: none; }
+html[lang="en"] [data-lang="en"] { display: block; }
+html[lang="fa"] [data-lang="fa"] { display: block; }
+span[data-lang], a[data-lang], h1[data-lang], h2[data-lang], h3[data-lang], h4[data-lang] {
+  display: none;
+}
+html[lang="en"] span[data-lang="en"],
+html[lang="fa"] span[data-lang="fa"],
+html[lang="en"] a[data-lang="en"],
+html[lang="fa"] a[data-lang="fa"],
+html[lang="en"] h1[data-lang="en"],
+html[lang="fa"] h1[data-lang="fa"],
+html[lang="en"] h2[data-lang="en"],
+html[lang="fa"] h2[data-lang="fa"],
+html[lang="en"] h3[data-lang="en"],
+html[lang="fa"] h3[data-lang="fa"],
+html[lang="en"] h4[data-lang="en"],
+html[lang="fa"] h4[data-lang="fa"] {
+  display: inline;
+}
+html[lang="en"] li[data-lang="en"],
+html[lang="fa"] li[data-lang="fa"] {
+  display: list-item;
+}
+</style>
+</head>
+<body>
+
+<div class="bg-orbs"></div>
+<div class="bg-grid"></div>
+
+<!-- Navigation -->
+<nav>
+  <div class="container nav-inner">
+    <a href="#" class="nav-brand">
+      <div class="nav-brand-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#5ee7ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="3"/>
+          <path d="M12 1v6m0 10v6M1 12h6m10 0h6"/>
+        </svg>
+      </div>
+      <span>Alexandria</span>
+      <span class="nav-brand-version">v3.0.0</span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="#features"><span data-lang="en">Features</span><span data-lang="fa">قابلیت‌ها</span></a></li>
+      <li><a href="#auto-export"><span data-lang="en">Auto-Export</span><span data-lang="fa">خروجی خودکار</span></a></li>
+      <li><a href="#mitre">MITRE</a></li>
+      <li><a href="#faq">FAQ</a></li>
+    </ul>
+    <div class="lang-toggle">
+      <button onclick="setLang('en')" id="btn-en" class="active">EN</button>
+      <button onclick="setLang('fa')" id="btn-fa">FA</button>
+    </div>
+  </div>
+</nav>
+
+<!-- Hero -->
+<section class="hero">
+  <div class="container">
+    <div class="hero-badge">
+      <span class="hero-badge-dot"></span>
+      <span data-lang="en">v3.0.0 — Auto-Export with USB Marker</span>
+      <span data-lang="fa">نسخه ۳.۰.۰ — خروجی خودکار با نشانه‌ی فلش</span>
+    </div>
+
+    <h1>Alexandria</h1>
+
+    <p class="hero-subtitle" data-lang="en">
+      A bilingual, laboratory-grade activity monitor for authorized cybersecurity education.
+    </p>
+    <p class="hero-subtitle" data-lang="fa">
+      یک ابزار پایش فعالیت آزمایشگاهی، دوزبانه و حرفه‌ای برای آموزش امنیت سایبری مجاز.
+    </p>
+
+    <p class="hero-tagline" data-lang="en">
+      <span>Monitor</span> the system. <span>Capture</span> the activity. <span>Prove</span> the integrity. <span>Export</span> automatically.
+    </p>
+    <p class="hero-tagline" data-lang="fa">
+      سیستم را <span>پایش کن</span>. فعالیت را <span>ثبت کن</span>. یکپارچگی را <span>اثبات کن</span>. خودکار <span>خروجی بگیر</span>.
+    </p>
+
+    <div class="hero-actions">
+      <a href="#download" class="btn btn-primary">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/>
+        </svg>
+        <span data-lang="en">Get Alexandria</span>
+        <span data-lang="fa">دریافت الکساندریا</span>
+      </a>
+      <a href="https://github.com/here-is-leo/alexandria" class="btn btn-secondary">
+        <svg viewBox="0 0 24 24" fill="currentColor">
+          <path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.44 9.8 8.21 11.39.6.11.82-.26.82-.58v-2.03c-3.34.72-4.04-1.61-4.04-1.61-.54-1.38-1.32-1.75-1.32-1.75-1.08-.74.08-.72.08-.72 1.2.08 1.83 1.23 1.83 1.23 1.06 1.82 2.79 1.29 3.47.99.11-.77.42-1.29.76-1.59-2.66-.3-5.47-1.33-5.47-5.92 0-1.31.47-2.38 1.23-3.22-.12-.3-.53-1.52.12-3.17 0 0 1.01-.32 3.3 1.23a11.5 11.5 0 0 1 6 0c2.29-1.55 3.3-1.23 3.3-1.23.65 1.65.24 2.87.12 3.17.77.84 1.23 1.91 1.23 3.22 0 4.61-2.81 5.61-5.49 5.91.43.37.81 1.1.81 2.22v3.29c0 .32.22.7.83.58C20.56 21.8 24 17.3 24 12c0-6.63-5.37-12-12-12z"/>
+        </svg>
+        <span data-lang="en">View on GitHub</span>
+        <span data-lang="fa">مشاهده در گیت‌هاب</span>
+      </a>
+    </div>
+
+    <div class="hero-terminal">
+      <div class="terminal-header">
+        <div class="terminal-dots"><span></span><span></span><span></span></div>
+        <div class="terminal-title">alexandria — CMD — 80×24</div>
+      </div>
+      <div class="terminal-body">
+        <span class="term-line"><span class="term-prompt">$</span> <span class="term-cmd">alexandria</span> <span class="term-flag">--detect</span> <span class="term-arg">ALEXANDRIA.md</span> <span class="term-flag">--auto-export</span></span>
+        <span class="term-line"><span class="term-success">[OK]</span> <span class="term-info">Marker file detected on E:\</span></span>
+        <span class="term-line"><span class="term-success">[OK]</span> <span class="term-info">Exporting 8 log files → E:\logs_export\</span></span>
+        <span class="term-line"><span class="term-dim">  ├─ report.html           HTML dashboard</span></span>
+        <span class="term-line"><span class="term-dim">  ├─ _hashes.sha256        Integrity manifest</span></span>
+        <span class="term-line"><span class="term-dim">  └─ alexandria_export.zip  Compressed archive</span></span>
+        <span class="term-line"><span class="term-success">[OK]</span> <span class="term-info">Auto-export completed in 1.82s</span><span class="term-cursor"></span></span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Stats -->
+<section>
+  <div class="container">
+    <div class="stats">
+      <div class="stat-card reveal">
+        <div class="stat-value">9</div>
+        <div class="stat-label" data-lang="en">Log Types</div>
+        <div class="stat-label" data-lang="fa">نوع لاگ</div>
+      </div>
+      <div class="stat-card reveal">
+        <div class="stat-value">8</div>
+        <div class="stat-label" data-lang="en">MITRE Techniques</div>
+        <div class="stat-label" data-lang="fa">تکنیک MITRE</div>
+      </div>
+      <div class="stat-card reveal">
+        <div class="stat-value">2</div>
+        <div class="stat-label" data-lang="en">Languages</div>
+        <div class="stat-label" data-lang="fa">زبان</div>
+      </div>
+      <div class="stat-card reveal">
+        <div class="stat-value">SHA-256</div>
+        <div class="stat-label" data-lang="en">Integrity</div>
+        <div class="stat-label" data-lang="fa">یکپارچگی</div>
+      </div>
+      <div class="stat-card reveal">
+        <div class="stat-value">5s</div>
+        <div class="stat-label" data-lang="en">Auto-Export Check</div>
+        <div class="stat-label" data-lang="fa">پایش فلش</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Features -->
+<section id="features">
+  <div class="container">
+    <div class="section-label">// 01 — Features</div>
+    <h2 class="section-title" data-lang="en">Everything you need to monitor, capture, and prove.</h2>
+    <h2 class="section-title" data-lang="fa">هر چیزی که برای پایش، ثبت و اثبات نیاز داری.</h2>
+    <p class="section-desc" data-lang="en">Nine log types, professional HTML reporting, SHA-256 integrity, and automatic export triggered by an authorized USB drive.</p>
+    <p class="section-desc" data-lang="fa">۹ نوع لاگ، گزارش HTML حرفه‌ای، تأیید SHA-256 و خروجی خودکار با وصل کردن فلش مجاز.</p>
+
+    <div class="features">
+      <div class="feature reveal">
+        <div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#5ee7ff" stroke-width="2"><rect x="2" y="6" width="20" height="12" rx="2"/><path d="M6 10h.01M10 10h.01M14 10h.01M18 10h.01M7 14h10"/></svg></div>
+        <h3 data-lang="en">Keyboard Logger</h3>
+        <h3 data-lang="fa">کی‌لاگر</h3>
+        <p data-lang="en">Captures native (Persian/English) character, English equivalent from physical key, and Windows virtual key code — all in one line.</p>
+        <p data-lang="fa">کاراکتر نهایی (فارسی/انگلیسی)، معادل انگلیسی کلید فیزیکی و کد VK ویندوز — همه در یک خط.</p>
+        <span class="feature-tag">CHAR · EN · VK</span>
+      </div>
+
+      <div class="feature reveal">
+        <div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#7ee787" stroke-width="2"><rect x="3" y="3" width="18" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg></div>
+        <h3 data-lang="en">Active Window Monitor</h3>
+        <h3 data-lang="fa">پایش پنجره فعال</h3>
+        <p data-lang="en">Records process name and window title on every focus change. Know exactly which app was in front at every moment.</p>
+        <p data-lang="fa">نام پروسه و عنوان پنجره در هر تغییر فوکوس. دقیقاً می‌دانی در هر لحظه کدام برنامه فعال بوده.</p>
+        <span class="feature-tag">win32gui</span>
+      </div>
+
+      <div class="feature reveal">
+        <div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#ffa657" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15 15 0 0 1 0 20M12 2a15 15 0 0 0 0 20"/></svg></div>
+        <h3 data-lang="en">Browser History</h3>
+        <h3 data-lang="fa">تاریخچه مرورگر</h3>
+        <p data-lang="en">Extracts Chrome and Edge SQLite history every 5 minutes. Top sites, visit times, and page titles — automatically aggregated.</p>
+        <p data-lang="fa">تاریخچه‌ی Chrome و Edge از SQLite هر ۵ دقیقه. سایت‌های پرکاربرد، زمان بازدید و عنوان صفحات — خودکار جمع‌آوری می‌شوند.</p>
+        <span class="feature-tag">sqlite3</span>
+      </div>
+
+      <div class="feature reveal">
+        <div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#a78bfa" stroke-width="2"><path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="1"/><path d="M9 12h6M9 16h6"/></svg></div>
+        <h3 data-lang="en">Clipboard Monitor</h3>
+        <h3 data-lang="fa">پایش کلیپ‌بورد</h3>
+        <p data-lang="en">Captures every clipboard change with a 500-character preview. Passwords, tokens, URLs — nothing slips through.</p>
+        <p data-lang="fa">ثبت هر تغییر کلیپ‌بورد با پیش‌نمایش ۵۰۰ کاراکتری. رمز، توکن، لینک — هیچ‌چیز از دست نمی‌رود.</p>
+        <span class="feature-tag">win32clipboard</span>
+      </div>
+
+      <div class="feature reveal">
+        <div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#ff6bd6" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 1v6m0 10v6M1 12h6m10 0h6"/></svg></div>
+        <h3 data-lang="en">Process Monitor</h3>
+        <h3 data-lang="fa">پایش پروسه‌ها</h3>
+        <p data-lang="en">Records every newly launched process with PID, username, and full executable path. Catches hidden background launches.</p>
+        <p data-lang="fa">ثبت هر پروسه‌ی جدید با PID، نام کاربر و مسیر کامل فایل اجرایی. حتی پروسه‌های مخفی پس‌زمینه.</p>
+        <span class="feature-tag">psutil</span>
+      </div>
+
+      <div class="feature reveal">
+        <div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#5ee7ff" stroke-width="2"><rect x="2" y="7" width="20" height="10" rx="2"/><path d="M6 12h.01M10 12h4M18 12h.01"/></svg></div>
+        <h3 data-lang="en">Auto-Export on USB</h3>
+        <h3 data-lang="fa">خروجی خودکار روی فلش</h3>
+        <p data-lang="en">Detects authorized USB drives via marker file (ALEXANDRIA.md) and exports everything automatically — no manual interaction.</p>
+        <p data-lang="fa">تشخیص فلش مجاز با فایل نشانه (ALEXANDRIA.md) و خروجی خودکار — بدون هیچ دخالت دستی.</p>
+        <span class="feature-tag">v3 · Marker File</span>
+      </div>
+
+      <div class="feature reveal">
+        <div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#7ee787" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M16 13H8M16 17H8M10 9H8"/></svg></div>
+        <h3 data-lang="en">HTML Forensics Report</h3>
+        <h3 data-lang="fa">گزارش جرم‌شناسی HTML</h3>
+        <p data-lang="en">GitHub-dark dashboard with statistics, bar charts, top apps, top sites — generated automatically at export time.</p>
+        <p data-lang="fa">داشبورد دارک-مود با آمار، نمودار میله‌ای، پرکاربردترین برنامه‌ها و سایت‌ها — خودکار در زمان خروجی.</p>
+        <span class="feature-tag">report.html</span>
+      </div>
+
+      <div class="feature reveal">
+        <div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#ffa657" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+        <h3 data-lang="en">SHA-256 Integrity</h3>
+        <h3 data-lang="fa">یکپارچگی SHA-256</h3>
+        <p data-lang="en">Every exported file gets a cryptographic hash in _hashes.sha256. Court-admissible proof that logs haven't been tampered with.</p>
+        <p data-lang="fa">هر فایل خروجی یک هش رمزنگاری‌شده در _hashes.sha256 می‌گیرد. اثبات قابل ارائه در دادگاه که لاگ‌ها دستکاری نشده‌اند.</p>
+        <span class="feature-tag">hashlib</span>
+      </div>
+
+      <div class="feature reveal">
+        <div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#a78bfa" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg></div>
+        <h3 data-lang="en">ZIP Compressed Export</h3>
+        <h3 data-lang="fa">خروجی فشرده ZIP</h3>
+        <p data-lang="en">All logs compressed into a single alexandria_export.zip. Text logs compress 3–5×, making evidence transfer fast.</p>
+        <p data-lang="fa">همه‌ی لاگ‌ها در یک alexandria_export.zip. لاگ‌های متنی ۳ تا ۵ برابر فشرده می‌شوند — انتقال سریع شواهد.</p>
+        <span class="feature-tag">zipfile</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Auto-Export -->
+<section id="auto-export" class="auto-export">
+  <div class="container">
+    <div class="center">
+      <div class="section-label">// 02 — Auto-Export</div>
+      <h2 class="section-title" data-lang="en">Plug in. Get everything. No clicks needed.</h2>
+      <h2 class="section-title" data-lang="fa">وصل کن. همه‌چیز را بگیر. نیازی به کلیک نیست.</h2>
+      <p class="section-desc" data-lang="en">Alexandria polls removable drives every 5 seconds. When it finds a USB with the marker file, it exports everything automatically.</p>
+      <p class="section-desc" data-lang="fa">الکساندریا هر ۵ ثانیه درایوهای قابل جابجایی را چک می‌کند. وقتی فلشی با فایل نشانه پیدا کرد، خودکار همه‌چیز را خروجی می‌گیرد.</p>
+    </div>
+
+    <div class="flow-diagram">
+      <div class="flow-step reveal">
+        <div class="flow-step-number">1</div>
+        <div class="flow-step-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#5ee7ff" stroke-width="2"><path d="M12 2v6m0 0l3-3m-3 3L9 5"/><rect x="8" y="10" width="8" height="6" rx="1"/><path d="M12 16v4m0 0l-2-2m2 2l2-2"/></svg></div>
+        <h4 data-lang="en">Mark USB</h4>
+        <h4 data-lang="fa">علامت‌گذاری فلش</h4>
+        <p data-lang="en">Run mark_usb.bat once. It creates ALEXANDRIA.md with the authorized content.</p>
+        <p data-lang="fa">یک بار mark_usb.bat را اجرا کن. فایل ALEXANDRIA.md با محتوای مجاز ساخته می‌شود.</p>
+      </div>
+
+      <div class="flow-step reveal">
+        <div class="flow-step-number">2</div>
+        <div class="flow-step-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#7ee787" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg></div>
+        <h4 data-lang="en">Detect Marker</h4>
+        <h4 data-lang="fa">تشخیص نشانه</h4>
+        <p data-lang="en">Alexandria polls drives every 5 seconds. Only marker files with exact content match are trusted.</p>
+        <p data-lang="fa">الکساندریا هر ۵ ثانیه درایوها را چک می‌کند. فقط نشانه‌ی با محتوای دقیق قابل اعتماد است.</p>
+      </div>
+
+      <div class="flow-step reveal">
+        <div class="flow-step-number">3</div>
+        <div class="flow-step-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#ffa657" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg></div>
+        <h4 data-lang="en">Auto-Export</h4>
+        <h4 data-lang="fa">خروجی خودکار</h4>
+        <p data-lang="en">Logs copied. HTML report generated. SHA-256 manifest created. ZIP archive built.</p>
+        <p data-lang="fa">لاگ‌ها کپی می‌شوند. گزارش HTML ساخته می‌شود. مانیفست SHA-256 تولید می‌شود. آرشیو ZIP ساخته می‌شود.</p>
+      </div>
+
+      <div class="flow-step reveal">
+        <div class="flow-step-number">4</div>
+        <div class="flow-step-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#a78bfa" stroke-width="2"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="10"/></svg></div>
+        <h4 data-lang="en">Done in Seconds</h4>
+        <h4 data-lang="fa">در چند ثانیه تمام</h4>
+        <p data-lang="en">Total time: under 5 seconds. Event logged in usb_*.txt for audit trail.</p>
+        <p data-lang="fa">زمان کل: کمتر از ۵ ثانیه. رویداد در usb_*.txt برای ردیابی ثبت می‌شود.</p>
+      </div>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header"></div>
+      <div class="code-body">
+<span class="k">"auto_export_enabled"</span>: <span class="b">true</span>,
+<span class="k">"auto_export_marker_file"</span>: <span class="s">"ALEXANDRIA.md"</span>,
+<span class="k">"auto_export_marker_content"</span>: <span class="s">"ALEXANDRIA-AUTHORIZED-EXPORT-KEY-v3-2026"</span>,
+<span class="k">"auto_export_check_interval"</span>: <span class="n">5</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MITRE -->
+<section id="mitre">
+  <div class="container">
+    <div class="section-label">// 03 — MITRE ATT&CK</div>
+    <h2 class="section-title" data-lang="en">Mapped to real adversary techniques.</h2>
+    <h2 class="section-title" data-lang="fa">نگاشت‌شده به تکنیک‌های واقعی مهاجم.</h2>
+    <p class="section-desc" data-lang="en">Every feature maps to a MITRE ATT&CK technique — and every technique maps to a defensive control. This is the core educational value.</p>
+    <p class="section-desc" data-lang="fa">هر قابلیت به یک تکنیک MITRE ATT&CK نگاشت شده — و هر تکنیک به یک کنترل دفاعی. این ارزش آموزشی اصلی است.</p>
+
+    <div class="mitre-grid">
+      <div class="mitre-item reveal">
+        <span class="mitre-id">T1056.001</span>
+        <div class="mitre-info">
+          <h4 data-lang="en">Input Capture: Keylogging</h4>
+          <h4 data-lang="fa">ثبت ورودی: کی‌لاگر</h4>
+          <p data-lang="en">Defense: Behavior analytics, EDR</p>
+          <p data-lang="fa">دفاع: تحلیل رفتاری، EDR</p>
+        </div>
+      </div>
+      <div class="mitre-item reveal">
+        <span class="mitre-id">T1115</span>
+        <div class="mitre-info">
+          <h4 data-lang="en">Clipboard Data</h4>
+          <h4 data-lang="fa">داده‌ی کلیپ‌بورد</h4>
+          <p data-lang="en">Defense: Clipboard restrictions</p>
+          <p data-lang="fa">دفاع: محدودسازی کلیپ‌بورد</p>
+        </div>
+      </div>
+      <div class="mitre-item reveal">
+        <span class="mitre-id">T1547.001</span>
+        <div class="mitre-info">
+          <h4 data-lang="en">Registry Run Keys</h4>
+          <h4 data-lang="fa">کلیدهای Run رجیستری</h4>
+          <p data-lang="en">Defense: Sysmon Event ID 13</p>
+          <p data-lang="fa">دفاع: Sysmon Event ID 13</p>
+        </div>
+      </div>
+      <div class="mitre-item reveal">
+        <span class="mitre-id">T1053.005</span>
+        <div class="mitre-info">
+          <h4 data-lang="en">Scheduled Task</h4>
+          <h4 data-lang="fa">تسک زمان‌بندی‌شده</h4>
+          <p data-lang="en">Defense: Task Scheduler audit</p>
+          <p data-lang="fa">دفاع: حسابرسی Task Scheduler</p>
+        </div>
+      </div>
+      <div class="mitre-item reveal">
+        <span class="mitre-id">T1057</span>
+        <div class="mitre-info">
+          <h4 data-lang="en">Process Discovery</h4>
+          <h4 data-lang="fa">کشف پروسه</h4>
+          <p data-lang="en">Defense: Process creation auditing</p>
+          <p data-lang="fa">دفاع: حسابرسی ساخت پروسه</p>
+        </div>
+      </div>
+      <div class="mitre-item reveal">
+        <span class="mitre-id">T1082</span>
+        <div class="mitre-info">
+          <h4 data-lang="en">System Information Discovery</h4>
+          <h4 data-lang="fa">کشف اطلاعات سیستم</h4>
+          <p data-lang="en">Defense: Baseline monitoring</p>
+          <p data-lang="fa">دفاع: پایش baseline</p>
+        </div>
+      </div>
+      <div class="mitre-item reveal">
+        <span class="mitre-id">T1083</span>
+        <div class="mitre-info">
+          <h4 data-lang="en">File and Directory Discovery</h4>
+          <h4 data-lang="fa">کشف فایل و دایرکتوری</h4>
+          <p data-lang="en">Defense: Filesystem auditing</p>
+          <p data-lang="fa">دفاع: حسابرسی فایل‌سیستم</p>
+        </div>
+      </div>
+      <div class="mitre-item reveal">
+        <span class="mitre-id">T1052.001</span>
+        <div class="mitre-info">
+          <h4 data-lang="en">Exfiltration Over USB</h4>
+          <h4 data-lang="fa">خروج داده از طریق USB</h4>
+          <p data-lang="en">Defense: DLP, USB port control</p>
+          <p data-lang="fa">دفاع: DLP، کنترل پورت USB</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section id="faq">
+  <div class="container">
+    <div class="center">
+      <div class="section-label">// 04 — FAQ</div>
+      <h2 class="section-title" data-lang="en">Frequently asked questions.</h2>
+      <h2 class="section-title" data-lang="fa">سؤالات متداول.</h2>
+    </div>
+
+    <div class="faq-list">
+      <details class="faq-item reveal">
+        <summary><span data-lang="en">Is Alexandria a keylogger?</span><span data-lang="fa">آیا الکساندریا یک کی‌لاگر است؟</span></summary>
+        <div class="faq-answer" data-lang="en">Technically, yes — it captures keystrokes. But it's <strong>far more</strong>: it captures windows, processes, clipboard, browser history, USB events, and system info, then produces a professional report with integrity verification.</div>
+        <div class="faq-answer" data-lang="fa">از نظر فنی بله — کیبورد را ثبت می‌کند. اما <strong>بسیار بیشتر</strong> از آن است: پنجره‌ها، پروسه‌ها، کلیپ‌بورد، تاریخچه مرورگر، رویدادهای USB و اطلاعات سیستم را هم ثبت می‌کند و یک گزارش حرفه‌ای با تأیید یکپارچگی تولید می‌کند.</div>
+      </details>
+
+      <details class="faq-item reveal">
+        <summary><span data-lang="en">Is this legal?</span><span data-lang="fa">آیا این قانونی است؟</span></summary>
+        <div class="faq-answer" data-lang="en"><strong>Only with written authorization.</strong> Deploying this on any system without explicit permission is illegal in most jurisdictions. This tool is designed for authorized cybersecurity laboratory environments.</div>
+        <div class="faq-answer" data-lang="fa"><strong>فقط با مجوز کتبی.</strong> استقرار این ابزار روی هر سیستمی بدون اجازه‌ی صریح در بیشتر کشورها غیرقانونی است. این ابزار برای محیط آزمایشگاهی امنیت سایبری مجاز طراحی شده.</div>
+      </details>
+
+      <details class="faq-item reveal">
+        <summary><span data-lang="en">How does auto-export know which USB to trust?</span><span data-lang="fa">خروجی خودکار چطور می‌فهمد به کدام فلش اعتماد کند؟</span></summary>
+        <div class="faq-answer" data-lang="en">It checks for a file named <code>ALEXANDRIA.md</code> with specific content. The content is defined in <code>config.json</code> and can be changed by the user. Only USBs with a matching marker will trigger export.</div>
+        <div class="faq-answer" data-lang="fa">فایل <code>ALEXANDRIA.md</code> را با محتوای مشخص در <code>config.json</code> چک می‌کند. فقط فلشی با نشانه‌ی مطابق می‌تواند export را تریگر کند.</div>
+      </details>
+
+      <details class="faq-item reveal">
+        <summary><span data-lang="en">Can someone fake the marker file?</span><span data-lang="fa">آیا کسی می‌تواند فایل نشانه را جعل کند؟</span></summary>
+        <div class="faq-answer" data-lang="en">Yes — anyone who knows the marker content can create a fake USB. This is why the marker content should be <strong>kept secret</strong> and treated like a password. For higher security, consider adding encryption or a signed certificate.</div>
+        <div class="faq-answer" data-lang="fa">بله — هر کسی که محتوای نشانه را بداند. به همین دلیل محتوای نشانه باید <strong>مخفی</strong> بماند. برای امنیت بالاتر، رمزنگاری یا امضای دیجیتال اضافه کن.</div>
+      </details>
+
+      <details class="faq-item reveal">
+        <summary><span data-lang="en">Will antivirus flag alexandria.exe?</span><span data-lang="fa">آیا آنتی‌ویروس alexandria.exe را تشخیص می‌دهد؟</span></summary>
+        <div class="faq-answer" data-lang="en"><strong>Likely yes</strong> on first run — PyInstaller binaries often trigger heuristic detection. The <code>install.bat</code> script automatically adds a Windows Defender exclusion. For other AV products, add the exclusion manually.</div>
+        <div class="faq-answer" data-lang="fa"><strong>احتمالاً بله</strong> در اولین اجرا. اسکریپت <code>install.bat</code> خودکار پوشه را در Windows Defender استثنا می‌کند.</div>
+      </details>
+
+      <details class="faq-item reveal">
+        <summary><span data-lang="en">Can I run this on Linux or macOS?</span><span data-lang="fa">آیا روی لینوکس یا مک اجرا می‌شود؟</span></summary>
+        <div class="faq-answer" data-lang="en">No — it relies on Windows-specific APIs (win32gui, win32clipboard, Registry, Task Scheduler).</div>
+        <div class="faq-answer" data-lang="fa">خیر — به APIهای مخصوص ویندوز وابسته است.</div>
+      </details>
+
+      <details class="faq-item reveal">
+        <summary><span data-lang="en">How do I verify the SHA-256 manifest?</span><span data-lang="fa">چطور مانیفست SHA-256 را بررسی کنم؟</span></summary>
+        <div class="faq-answer" data-lang="en">On Windows PowerShell: <code>Get-FileHash .\keylog_20261007.txt -Algorithm SHA256</code> — then compare with the entry in <code>_hashes.sha256</code>.</div>
+        <div class="faq-answer" data-lang="fa">در PowerShell ویندوز: <code>Get-FileHash .\keylog_20261007.txt -Algorithm SHA256</code> — و با مقدار در <code>_hashes.sha256</code> مقایسه کن.</div>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section id="download">
+  <div class="container">
+    <div class="cta reveal">
+      <h2 data-lang="en">Ready to deploy in your authorized lab?</h2>
+      <h2 data-lang="fa">آماده‌ی استقرار در آزمایشگاه مجاز خودت هستی؟</h2>
+      <p data-lang="en">Download the latest release, read the documentation, and follow the deployment workflow. Written authorization required before deployment.</p>
+      <p data-lang="fa">آخرین نسخه را دانلود کن، مستندات را بخوان و جریان استقرار را دنبال کن. مجوز کتبی قبل از استقرار الزامی است.</p>
+      <div class="hero-actions" style="margin-bottom:0">
+        <a href="https://github.com/here-is-leo/alexandria/releases/latest" class="btn btn-primary">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/>
+          </svg>
+          <span data-lang="en">Download v3.0.0</span>
+          <span data-lang="fa">دانلود نسخه ۳.۰.۰</span>
+        </a>
+        <a href="https://github.com/here-is-leo/alexandria" class="btn btn-secondary">
+          <span data-lang="en">Read Documentation</span>
+          <span data-lang="fa">خواندن مستندات</span>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <h3>Alexandria</h3>
+        <p data-lang="en">A bilingual, laboratory-grade activity monitor for authorized cybersecurity education. Named after the Library of Alexandria.</p>
+        <p data-lang="fa">یک ابزار پایش فعالیت آزمایشگاهی، دوزبانه و حرفه‌ای برای آموزش امنیت سایبری مجاز. نام برگرفته از کتابخانه‌ی اسکندریه.</p>
+      </div>
+      <div class="footer-col">
+        <h4 data-lang="en">Project</h4>
+        <h4 data-lang="fa">پروژه</h4>
+        <ul>
+          <li><a href="#features"><span data-lang="en">Features</span><span data-lang="fa">قابلیت‌ها</span></a></li>
+          <li><a href="#auto-export"><span data-lang="en">Auto-Export</span><span data-lang="fa">خروجی خودکار</span></a></li>
+          <li><a href="#mitre">MITRE</a></li>
+          <li><a href="#faq">FAQ</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4 data-lang="en">Resources</h4>
+        <h4 data-lang="fa">منابع</h4>
+        <ul>
+          <li><a href="https://github.com/here-is-leo/alexandria">GitHub</a></li>
+          <li><a href="https://github.com/here-is-leo/alexandria/releases">Releases</a></li>
+          <li><a href="https://attack.mitre.org/">MITRE ATT&CK</a></li>
+          <li><a href="https://overthewire.org/">OverTheWire</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4 data-lang="en">Author</h4>
+        <h4 data-lang="fa">نویسنده</h4>
+        <ul>
+          <li><a href="https://github.com/here-is-leo">GitHub</a></li>
+          <li><a href="https://linkedin.com/in/ilya-farahani-2160103b0">LinkedIn</a></li>
+          <li><a href="https://t.me/Here_is_leo">Telegram</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div>© 2026 Leo (Ilya Farahani) — MIT License</div>
+      <div class="footer-legal">
+        <span>
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#ff5f56" stroke-width="2"><path d="M12 9v4M12 17h.01M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/></svg>
+          <span data-lang="en">Authorized laboratory use only</span>
+          <span data-lang="fa">فقط استفاده‌ی آزمایشگاهی مجاز</span>
+        </span>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+// Language switching
+function setLang(lang) {
+  const html = document.getElementById('htmlRoot');
+  html.lang = lang;
+  html.dir = lang === 'fa' ? 'rtl' : 'ltr';
+  document.getElementById('btn-en').classList.toggle('active', lang === 'en');
+  document.getElementById('btn-fa').classList.toggle('active', lang === 'fa');
+  try { localStorage.setItem('alexandria-lang', lang); } catch(e) {}
+}
+
+// Restore language preference
+try {
+  const saved = localStorage.getItem('alexandria-lang');
+  if (saved) setLang(saved);
+} catch(e) {}
+
+// Scroll reveal
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+    }
+  });
+}, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+// Smooth scroll for anchor links
+document.querySelectorAll('a[href^="#"]').forEach(link => {
+  link.addEventListener('click', e => {
+    const target = document.querySelector(link.getAttribute('href'));
+    if (target) {
+      e.preventDefault();
+      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  });
+});
+</script>
+
+</body>
+</html>
