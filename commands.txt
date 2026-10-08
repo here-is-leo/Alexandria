@@ -1,0 +1,472 @@
+================================================================
+  Alexandria v2 - Laboratory Activity Monitor
+  Command Reference Card
+  For authorized cybersecurity training only
+================================================================
+
+  Author  Leo (Ilya Farahani)
+  Version v2.0.0
+  Date    2026-10-08
+  License MIT
+
+
+----------------------------------------------------------------
+  SECTION 1 - PROJECT FILES
+----------------------------------------------------------------
+
+Project folder (developer PC)
+    CUserslenovoDesktopCyberProject
+
+Source files
+    alexandria.py          Main daemon + export module (Python)
+    config.json            Runtime configuration (12 options)
+    install.bat            Day-1 installer
+    export.bat             Day-7 log exporter
+    uninstall.bat          Post-project cleanup
+    README.md              Full project documentation
+    commands.txt           This file
+    LICENSE                MIT License
+    assets
+        alexandria-hero.svg    Animated hero banner
+
+Build artifacts (NOT for Git)
+    alexandria.exe         Compiled executable
+    alexandria.spec        PyInstaller spec
+    build                 Temporary build files
+    dist                  PyInstaller output
+
+Files on USB flash drive (7 files in root)
+    alexandria.exe
+    config.json
+    install.bat
+    export.bat
+    uninstall.bat
+    README.md
+    commands.txt
+
+Installed location on target system
+    %APPDATA%Alexandria
+        alexandria.exe
+        config.json (optional)
+        logs
+            keylog_YYYYMMDD.txt
+            activity_YYYYMMDD.txt
+            browser_YYYYMMDD.txt
+            clipboard_YYYYMMDD.txt
+            process_YYYYMMDD.txt
+            usb_YYYYMMDD.txt
+            system_YYYYMMDD.txt
+
+
+----------------------------------------------------------------
+  SECTION 2 - BUILD COMMANDS (Developer PC)
+----------------------------------------------------------------
+
+Install Python dependencies
+    pip install pynput psutil pywin32 pyinstaller
+
+Navigate to project folder
+    cd CUserslenovoDesktopCyberProject
+
+Build EXE from source (one-file, no console)
+    pyinstaller --noconsole --onefile --name alexandria alexandria.py
+
+Copy EXE to project root
+    copy Y distalexandria.exe .
+
+Run source directly (for testing)
+    python alexandria.py
+
+Run export mode from command line
+    python alexandria.py --export E.
+
+Kill all running instances before rebuild
+    taskkill f im alexandria.exe
+
+Clean build artifacts
+    rmdir S Q build
+    rmdir S Q dist
+    del alexandria.spec
+
+
+----------------------------------------------------------------
+  SECTION 3 - INSTALLATION (Day 1 - On Target System)
+----------------------------------------------------------------
+
+Step 1 Insert USB flash drive into target system.
+
+Step 2 In File Explorer, open the USB drive.
+
+Step 3 Right-click install.bat - Run as administrator.
+
+Step 4 When UAC prompts, click Yes.
+
+Step 5 Wait for these messages
+        [] Installing Alexandria...
+        [] Adding Windows Defender exclusion...
+        [] Creating Run Key...
+        [] Creating Scheduled Task...
+        [] Starting Alexandria...
+        [OK] Alexandria installed and running.
+        [OK] You can now remove the USB drive.
+
+Step 6 Wait 5 seconds for the window to close.
+
+Step 7 Safely remove the USB flash drive.
+
+Step 8 Verify installation (see Section 4).
+
+
+----------------------------------------------------------------
+  SECTION 4 - VERIFICATION AFTER INSTALL
+----------------------------------------------------------------
+
+Check if Alexandria is running
+    tasklist  findstr alexandria
+    EXPECTED exactly ONE line
+
+Check installed files
+    dir %APPDATA%Alexandria
+    EXPECTED alexandria.exe and logs folder
+
+Check log folder contents
+    dir %APPDATA%Alexandrialogs
+    EXPECTED system_YYYYMMDD.txt (created immediately)
+
+Check system info log
+    type %APPDATA%Alexandrialogssystem_YYYYMMDD.txt
+    EXPECTED one line of JSON with hostname, OS, CPU, RAM
+
+Test keylogger (type a few words in Notepad first)
+    type %APPDATA%Alexandrialogskeylog_YYYYMMDD.txt
+    EXPECTED lines with CHAR  EN  VK
+
+Check Run Key
+    reg query HKCUSoftwareMicrosoftWindowsCurrentVersionRun v AlexandriaMonitor
+
+Check Scheduled Task
+    schtasks Query TN AlexandriaTask
+
+
+----------------------------------------------------------------
+  SECTION 5 - MONITORING DURING THE WEEK (Days 1-7)
+----------------------------------------------------------------
+
+IMPORTANT USB flash drive is NOT connected during this week.
+
+Check if still running
+    tasklist  findstr alexandria
+
+View today's keylog (live)
+    type %APPDATA%Alexandrialogskeylog_%DATE~-4,4%%DATE~-10,2%%DATE~-7,2%.txt
+
+View today's activity log
+    type %APPDATA%Alexandrialogsactivity_%DATE~-4,4%%DATE~-10,2%%DATE~-7,2%.txt
+
+View today's clipboard log
+    type %APPDATA%Alexandrialogsclipboard_%DATE~-4,4%%DATE~-10,2%%DATE~-7,2%.txt
+
+View today's process log
+    type %APPDATA%Alexandrialogsprocess_%DATE~-4,4%%DATE~-10,2%%DATE~-7,2%.txt
+
+View USB events
+    type %APPDATA%Alexandrialogsusb_%DATE~-4,4%%DATE~-10,2%%DATE~-7,2%.txt
+
+List all log files
+    dir %APPDATA%Alexandrialogs
+
+Count log files
+    dir %APPDATA%Alexandrialogs B  find C V 
+
+NOTE Do NOT connect the USB flash drive during monitoring week.
+
+
+----------------------------------------------------------------
+  SECTION 6 - EXPORT LOGS (Day 7 - USB Plug #2)
+----------------------------------------------------------------
+
+IMPORTANT export.bat MUST be run FROM the USB drive.
+           Running it from the desktop or C will be rejected.
+
+Step 1 Insert USB flash drive.
+
+Step 2 Note the USB drive letter (e.g., E, F, G).
+
+Step 3 Open the USB drive in File Explorer.
+
+Step 4 Double-click export.bat (no admin needed).
+
+Step 5 Wait for these messages
+        [] Checking if target is a USB drive...
+        [] USB drive detected. Exporting Alexandria v2 logs...
+        [+] N log file(s) copied to Elogs_export
+        [+] HTML report Elogs_exportreport.html
+        [+] ZIP archive created Ealexandria_export.zip
+        [OK] Logs exported to Elogs_export
+        [OK] HTML report Elogs_exportreport.html
+        [OK] ZIP archive Ealexandria_export.zip
+
+Step 6 Press any key to close, then safely eject the USB.
+
+Exported files on USB
+    Ealexandria_export.zip         Compressed archive
+    Elogs_export
+        report.html                  HTML dashboard (open in browser)
+        _summary.txt                 Export summary
+        _hashes.sha256               SHA-256 integrity manifest
+        keylog_YYYYMMDD.txt          (one per day)
+        activity_YYYYMMDD.txt
+        browser_YYYYMMDD.txt
+        clipboard_YYYYMMDD.txt
+        process_YYYYMMDD.txt
+        usb_YYYYMMDD.txt
+        system_YYYYMMDD.txt
+
+Manual export (if export.bat fails)
+    %APPDATA%Alexandriaalexandria.exe --export E.
+
+
+----------------------------------------------------------------
+  SECTION 7 - VERIFYING EXPORTED DATA
+----------------------------------------------------------------
+
+Open HTML report in default browser
+    start Elogs_exportreport.html
+
+View summary
+    type Elogs_export_summary.txt
+
+View SHA-256 manifest
+    type Elogs_export_hashes.sha256
+
+Verify a single file's SHA-256 (PowerShell)
+    Get-FileHash Elogs_exportkeylog_YYYYMMDD.txt -Algorithm SHA256
+    (Compare with the corresponding entry in _hashes.sha256)
+
+Extract ZIP archive
+    (Right-click alexandria_export.zip - Extract All)
+    Or from command line
+    tar -xf Ealexandria_export.zip -C Eextracted
+
+
+----------------------------------------------------------------
+  SECTION 8 - UNINSTALL (After Project Submission)
+----------------------------------------------------------------
+
+Step 1 Insert USB flash drive into target system.
+
+Step 2 Right-click uninstall.bat - Run as administrator.
+
+Step 3 Wait for these messages
+        [] Stopping Alexandria...
+        [] Removing Run Key...
+        [] Removing Scheduled Task...
+        [] Removing Defender exclusion...
+        [] Removing files...
+        [OK] Alexandria completely removed.
+
+Step 4 Verify complete removal (see Section 9).
+
+Step 5 Safely eject the USB flash drive.
+
+
+----------------------------------------------------------------
+  SECTION 9 - VERIFYING COMPLETE REMOVAL
+----------------------------------------------------------------
+
+All of these should return EMPTY or not found
+
+Check no process running
+    tasklist  findstr alexandria
+
+Check no files remain
+    dir %APPDATA%Alexandria
+
+Check Run Key removed
+    reg query HKCUSoftwareMicrosoftWindowsCurrentVersionRun v AlexandriaMonitor
+
+Check Scheduled Task removed
+    schtasks Query TN AlexandriaTask
+
+
+----------------------------------------------------------------
+  SECTION 10 - TROUBLESHOOTING
+----------------------------------------------------------------
+
+--- Access Denied on installuninstall ---
+Cause CMD not running as administrator.
+Fix   Right-click the .bat file - Run as administrator.
+
+--- Antivirus quarantined alexandria.exe ---
+Cause PyInstaller binaries are often flagged as heuristic malware.
+Fix   Add exclusion manually
+       Settings - Privacy & security - Windows Security
+       - Virus & threat protection - Manage settings
+       - Exclusions - Add an exclusion - Folder
+       - %APPDATA%Alexandria
+
+--- Alexandria not running after install ---
+Diagnose
+    tasklist  findstr alexandria
+    dir %APPDATA%Alexandria
+Fix Re-run install.bat as administrator.
+
+--- Program does not start after reboot ---
+Check Run Key
+    reg query HKCUSoftwareMicrosoftWindowsCurrentVersionRun v AlexandriaMonitor
+Check Scheduled Task
+    schtasks Query TN AlexandriaTask
+Re-run install.bat if either is missing.
+
+--- Multiple identical log lines per keypress ---
+Cause Multiple Alexandria instances running simultaneously.
+Fix  
+    taskkill f im alexandria.exe
+    (then start one instance again)
+The single-instance Mutex prevents this automatically in v2.
+
+--- export.bat says Not a removable USB drive ---
+Cause export.bat was run from C or desktop, not from the USB.
+Fix   Copy export.bat to the USB root and run it from there.
+
+--- report.html missing ---
+Cause enable_html_report set to false in config.json.
+Fix   Set to true in config.json, re-run export.
+
+--- File locked, cannot delete Alexandria folder ---
+Fix (as administrator)
+    taskkill f im alexandria.exe
+    rmdir S Q %APPDATA%Alexandria
+
+
+----------------------------------------------------------------
+  SECTION 11 - EMERGENCY CLEANUP (Administrator)
+----------------------------------------------------------------
+
+Open CMD as Administrator, then run in order
+
+1. Stop scheduled task
+    schtasks Delete TN AlexandriaTask F
+
+2. Remove Run Key
+    reg delete HKCUSoftwareMicrosoftWindowsCurrentVersionRun v AlexandriaMonitor f
+
+3. Kill all running instances
+    taskkill f im alexandria.exe
+
+4. Remove Defender exclusion
+    powershell -Command Remove-MpPreference -ExclusionPath '%APPDATA%Alexandria'
+
+5. Remove files
+    rmdir S Q %APPDATA%Alexandria
+
+6. Verify
+    tasklist  findstr alexandria
+    dir %APPDATA%Alexandria
+
+
+----------------------------------------------------------------
+  SECTION 12 - USEFUL SHORTCUTS
+----------------------------------------------------------------
+
+Open APPDATA folder
+    explorer %APPDATA%
+
+Open Alexandria folder
+    explorer %APPDATA%Alexandria
+
+Open logs folder
+    explorer %APPDATA%Alexandrialogs
+
+Open project folder
+    explorer CUserslenovoDesktopCyberProject
+
+Open Task Manager
+    taskmgr
+
+Open Registry Editor
+    regedit
+
+Open Scheduled Tasks
+    taskschd.msc
+
+Open Windows Security
+    windowsdefender
+
+
+----------------------------------------------------------------
+  SECTION 13 - PERSISTENCE MECHANISMS
+----------------------------------------------------------------
+
+Alexandria uses TWO persistence methods
+
+1. Registry Run Key
+   Location    HKCUSoftwareMicrosoftWindowsCurrentVersionRun
+   Value name  AlexandriaMonitor
+   Trigger     User logon
+
+2. Scheduled Task
+   Task name   AlexandriaTask
+   Trigger     ONLOGON
+   Run level   LIMITED (current user)
+
+Protection
+   Single-instance Windows Mutex
+   Name     GlobalAlexandria_Lab_Monitor_Mutex_2026
+   Purpose  Prevents multiple simultaneous instances
+
+
+----------------------------------------------------------------
+  SECTION 14 - CONFIGURATION OPTIONS (config.json)
+----------------------------------------------------------------
+
+browser_extract_interval    300     Seconds between browser extractions
+system_info_interval        21600   Seconds between system info snapshots
+clipboard_interval          3       Seconds between clipboard checks
+process_check_interval      10      Seconds between process scans
+idle_threshold_seconds      120     Idle threshold for keylogger filter
+log_max_size_mb             10      Log rotation size threshold
+enable_clipboard            true    Enable clipboard monitoring
+enable_process_monitor      true    Enable process launch tracking
+enable_idle_detection       true    Enable idle filter for keylogger
+enable_usb_events           true    Enable USB connectdisconnect tracking
+enable_zip_export           true    Compress export into ZIP
+enable_html_report          true    Generate HTML dashboard
+enable_sha256               true    Generate SHA-256 manifest
+
+
+----------------------------------------------------------------
+  SECTION 15 - MITRE ATT&CK MAPPING
+----------------------------------------------------------------
+
+Technique                             ID           Feature
+Input Capture Keylogging             T1056.001    Keyboard Logger
+Clipboard Data                        T1115        Clipboard Monitor
+Registry Run Keys  Startup Folder    T1547.001    Run Key Persistence
+Scheduled Task  Job                  T1053.005    Scheduled Task
+Process Discovery                     T1057        Process Monitor
+System Information Discovery          T1082        System Info Collector
+File and Directory Discovery          T1083        Browser History Scan
+
+
+----------------------------------------------------------------
+  SECTION 16 - LEGAL AND ETHICAL NOTES
+----------------------------------------------------------------
+
+- This tool is used ONLY in an authorized laboratory environment.
+- Written permission from instructor and institution REQUIRED.
+- Do NOT deploy on systems without explicit consent.
+- All data collected must be destroyed after project evaluation.
+- Use uninstall.bat for complete removal.
+
+Authorization Reference
+    Instructor   _________________________
+    Institution  _________________________
+    Date         _________________________
+
+
+================================================================
+  END OF DOCUMENT
+  Alexandria v2.0.0 - Copyright (c) 2026 Leo (Ilya Farahani)
+  MIT License
+================================================================
