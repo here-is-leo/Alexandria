@@ -11,5 +11,9 @@
   "enable_usb_events": true,
   "enable_zip_export": true,
   "enable_html_report": true,
-  "enable_sha256": true
+  "enable_sha256": true,
+  "auto_export_enabled": true,
+  "auto_export_marker_file": "ALEXANDRIA.md",
+  "auto_export_marker_content": "ALEXANDRIA-AUTHORIZED-EXPORT-KEY-v3-2026",
+  "auto_export_check_interval": 5
 }
