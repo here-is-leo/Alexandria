@@ -1,0 +1,15 @@
+{
+  "browser_extract_interval": 300,
+  "system_info_interval": 21600,
+  "clipboard_interval": 3,
+  "process_check_interval": 10,
+  "idle_threshold_seconds": 120,
+  "log_max_size_mb": 10,
+  "enable_clipboard": true,
+  "enable_process_monitor": true,
+  "enable_idle_detection": true,
+  "enable_usb_events": true,
+  "enable_zip_export": true,
+  "enable_html_report": true,
+  "enable_sha256": true
+}
