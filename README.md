@@ -1,5 +1,8 @@
 <div align="center">
 
+<img src="assets/alexandria-hero.svg" alt="Alexandria Activity Monitor" width="100%">
+
+<br>
 <h1>⚡ Alexandria</h1>
 
 <p><strong>Monitor the system. Capture the activity. Prove the integrity.</strong></p>
