@@ -664,7 +664,7 @@ Copyright © 2026 Leo (Ilya Farahani).
 **Leo (Ilya Farahani)**
 
 - GitHub: [github.com/here-is-leo](https://github.com/here-is-leo)
-- LinkedIn: [linkedin.com/in/ilya-farahani-2160103b0](https://www.linkedin.com/in/ilya-farahani-2160103b0)
+- LinkedIn: [linkedin.com/in/ilya-farahani](https://www.linkedin.com/in/ilya-farahani)
 - Telegram: [t.me/Here_is_leo](https://t.me/Here_is_leo)
 - Email: [ilyafarahanii@gmail.com](mailto:ilyafarahanii@gmail.com)
 
@@ -964,6 +964,6 @@ Copyright © 2026 Leo (Ilya Farahani).
 **لئو (ایلیا فراهانی)**
 
 - گیت‌هاب: [github.com/here-is-leo](https://github.com/here-is-leo)
-- لینکدین: [linkedin.com/in/ilya-farahani-2160103b0](https://www.linkedin.com/in/ilya-farahani-2160103b0)
+- لینکدین: [linkedin.com/in/ilya-farahani](https://www.linkedin.com/in/ilya-farahani)
 - تلگرام: [t.me/Here_is_leo](https://t.me/Here_is_leo)
 - ایمیل: [ilyafarahanii@gmail.com](mailto:ilyafarahanii@gmail.com)
