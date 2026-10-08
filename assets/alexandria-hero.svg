@@ -1,27 +1,33 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 400" width="1200" height="400">
   <defs>
-    <!-- Gradient: Background -->
+    <!-- Background gradient -->
     <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
       <stop offset="0%" stop-color="#0d1117"/>
       <stop offset="50%" stop-color="#0a0e14"/>
       <stop offset="100%" stop-color="#0d1117"/>
     </linearGradient>
 
-    <!-- Gradient: Accent (cyan to purple) -->
+    <!-- Accent: cyan to purple to pink -->
     <linearGradient id="accentGrad" x1="0%" y1="0%" x2="100%" y2="0%">
       <stop offset="0%" stop-color="#5ee7ff"/>
       <stop offset="50%" stop-color="#7c5cff"/>
       <stop offset="100%" stop-color="#ff6bd6"/>
     </linearGradient>
 
-    <!-- Gradient: Title -->
+    <!-- Title gradient -->
     <linearGradient id="titleGrad" x1="0%" y1="0%" x2="100%" y2="0%">
       <stop offset="0%" stop-color="#58a6ff"/>
       <stop offset="50%" stop-color="#a78bfa"/>
       <stop offset="100%" stop-color="#5ee7ff"/>
     </linearGradient>
 
-    <!-- Glow filter -->
+    <!-- USB glow gradient -->
+    <linearGradient id="usbGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#7ee787"/>
+      <stop offset="100%" stop-color="#5ee7ff"/>
+    </linearGradient>
+
+    <!-- Filters -->
     <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
       <feGaussianBlur stdDeviation="3" result="blur"/>
       <feMerge>
@@ -33,6 +39,15 @@
     <filter id="softGlow" x="-50%" y="-50%" width="200%" height="200%">
       <feGaussianBlur stdDeviation="8" result="blur"/>
       <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+
+    <filter id="strongGlow" x="-100%" y="-100%" width="300%" height="300%">
+      <feGaussianBlur stdDeviation="12" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
         <feMergeNode in="blur"/>
         <feMergeNode in="SourceGraphic"/>
       </feMerge>
@@ -63,14 +78,14 @@
 
   <!-- Top status bar -->
   <g font-family="'Courier New', monospace" font-size="11" fill="#5ee7ff" opacity="0.7">
-    <text x="50" y="55">┌─[alexandria@lab]─[~]</text>
-    <text x="290" y="55">─────────────────────────────────────</text>
+    <text x="50" y="55">┌─[alexandria@v3.0.0]─[auto-export]</text>
+    <text x="360" y="55">─────────────────────────────</text>
     <circle cx="1120" cy="51" r="4" fill="#ff5f56"/>
     <circle cx="1140" cy="51" r="4" fill="#ffbd2e"/>
     <circle cx="1160" cy="51" r="4" fill="#27c93f"/>
   </g>
 
-  <!-- Main Shield / Eye Icon -->
+  <!-- Main Shield / Eye Icon with USB indicator -->
   <g transform="translate(140, 200)">
     <!-- Outer hexagon -->
     <polygon points="0,-80 69,-40 69,40 0,80 -69,40 -69,-40"
@@ -83,14 +98,32 @@
     <ellipse cx="0" cy="0" rx="30" ry="18" fill="none" stroke="#5ee7ff" stroke-width="2" filter="url(#glow)"/>
     <circle cx="0" cy="0" r="10" fill="#5ee7ff" filter="url(#glow)"/>
     <circle cx="0" cy="0" r="4" fill="#0d1117"/>
-    <!-- Pupil animation -->
+    <!-- Rotating pupil animation -->
     <animateTransform attributeName="transform" type="rotate"
                       from="0 0 0" to="360 0 0" dur="20s" repeatCount="indefinite"
                       additive="sum"/>
+
+    <!-- USB indicator badge (bottom-right of hexagon) -->
+    <g transform="translate(50, 50)">
+      <circle cx="0" cy="0" r="20" fill="#0d1117" stroke="url(#usbGrad)" stroke-width="2" filter="url(#glow)"/>
+      <!-- USB icon -->
+      <g stroke="#7ee787" stroke-width="2" fill="none">
+        <circle cx="0" cy="-8" r="2.5" fill="#7ee787"/>
+        <line x1="0" y1="-5.5" x2="0" y2="6"/>
+        <line x1="0" y1="6" x2="-5" y2="10"/>
+        <line x1="0" y1="6" x2="5" y2="10"/>
+        <rect x="-2" y="-2" width="4" height="4" fill="#7ee787"/>
+      </g>
+      <!-- Pulse animation -->
+      <circle cx="0" cy="0" r="20" fill="none" stroke="#7ee787" stroke-width="1" opacity="0.6">
+        <animate attributeName="r" values="20;30;20" dur="2s" repeatCount="indefinite"/>
+        <animate attributeName="opacity" values="0.6;0;0.6" dur="2s" repeatCount="indefinite"/>
+      </circle>
+    </g>
   </g>
 
   <!-- Title: Alexandria -->
-  <text x="290" y="175"
+  <text x="290" y="160"
         font-family="'Segoe UI', Arial, sans-serif"
         font-size="72" font-weight="800"
         fill="url(#titleGrad)"
@@ -99,58 +132,81 @@
     Alexandria
   </text>
 
+  <!-- Version badge -->
+  <g transform="translate(700, 100)">
+    <rect x="0" y="0" rx="14" ry="14" width="70" height="26" fill="#0d1117" stroke="#5ee7ff" stroke-width="1.5"/>
+    <text x="35" y="18" font-family="'Segoe UI', Arial, sans-serif" font-size="13" font-weight="700"
+          fill="#5ee7ff" text-anchor="middle">v3.0.0</text>
+  </g>
+
   <!-- Subtitle -->
-  <text x="290" y="215"
+  <text x="290" y="200"
         font-family="'Segoe UI', Arial, sans-serif"
         font-size="16" font-weight="400"
         fill="#8b949e"
         letter-spacing="3">
-    LABORATORY ACTIVITY MONITOR · v2.0
+    LABORATORY ACTIVITY MONITOR · AUTO-EXPORT
   </text>
 
   <!-- Divider line -->
-  <line x1="290" y1="235" x2="1150" y2="235" stroke="#30363d" stroke-width="1" opacity="0.6"/>
+  <line x1="290" y1="220" x2="1150" y2="220" stroke="#30363d" stroke-width="1" opacity="0.6"/>
 
   <!-- Tagline -->
-  <text x="290" y="265"
+  <text x="290" y="248"
         font-family="'Segoe UI', Arial, sans-serif"
         font-size="14" font-weight="400"
         fill="#c9d1d9" opacity="0.85">
-    Monitor the system. Capture the activity. Prove the integrity.
+    Monitor the system. Capture the activity. Prove the integrity. Export automatically.
   </text>
 
-  <!-- Terminal-style command line -->
-  <g transform="translate(290, 300)" font-family="'Courier New', monospace" font-size="13">
+  <!-- Terminal-style command line with USB auto-export -->
+  <g transform="translate(290, 285)" font-family="'Courier New', monospace" font-size="13">
     <text x="0" y="0" fill="#7ee787">$</text>
     <text x="15" y="0" fill="#c9d1d9">alexandria</text>
-    <text x="110" y="0" fill="#79c0ff">--monitor</text>
-    <text x="210" y="0" fill="#79c0ff">--duration</text>
-    <text x="310" y="0" fill="#ffa657">7d</text>
-    <text x="345" y="0" fill="#79c0ff">--output</text>
-    <text x="430" y="0" fill="#a5d6ff">usb://logs_export</text>
+    <text x="110" y="0" fill="#79c0ff">--detect</text>
+    <text x="195" y="0" fill="#ffa657">ALEXANDRIA.md</text>
+    <text x="350" y="0" fill="#79c0ff">--auto-export</text>
+    <text x="490" y="0" fill="#7ee787">✓</text>
     <!-- Blinking cursor -->
-    <rect x="560" y="-12" width="8" height="14" fill="#5ee7ff">
+    <rect x="515" y="-12" width="8" height="14" fill="#5ee7ff">
       <animate attributeName="opacity" values="1;1;0;0;1" dur="1.2s" repeatCount="indefinite"/>
     </rect>
   </g>
 
+  <!-- Second terminal line — export event -->
+  <g transform="translate(290, 308)" font-family="'Courier New', monospace" font-size="12">
+    <text x="0" y="0" fill="#8b949e">└─</text>
+    <text x="25" y="0" fill="#7ee787">[OK]</text>
+    <text x="65" y="0" fill="#c9d1d9">8 log files → E:\logs_export\</text>
+    <text x="310" y="0" fill="#8b949e">·</text>
+    <text x="325" y="0" fill="#ffa657">report.html</text>
+    <text x="430" y="0" fill="#8b949e">·</text>
+    <text x="445" y="0" fill="#5ee7ff">SHA-256</text>
+    <text x="520" y="0" fill="#8b949e">·</text>
+    <text x="535" y="0" fill="#a78bfa">ZIP</text>
+  </g>
+
   <!-- Feature pills -->
-  <g transform="translate(290, 340)" font-family="'Segoe UI', Arial, sans-serif" font-size="11">
+  <g transform="translate(290, 345)" font-family="'Segoe UI', Arial, sans-serif" font-size="11">
     <!-- Pill 1: 9 Log Types -->
-    <rect x="0" y="0" rx="12" ry="12" width="130" height="22" fill="#0d1117" stroke="#5ee7ff" stroke-width="1"/>
-    <text x="65" y="15" fill="#5ee7ff" text-anchor="middle" font-weight="600">9 LOG TYPES</text>
+    <rect x="0" y="0" rx="12" ry="12" width="125" height="22" fill="#0d1117" stroke="#5ee7ff" stroke-width="1"/>
+    <text x="62" y="15" fill="#5ee7ff" text-anchor="middle" font-weight="600">9 LOG TYPES</text>
 
-    <!-- Pill 2: SHA-256 -->
-    <rect x="145" y="0" rx="12" ry="12" width="110" height="22" fill="#0d1117" stroke="#7ee787" stroke-width="1"/>
-    <text x="200" y="15" fill="#7ee787" text-anchor="middle" font-weight="600">SHA-256</text>
+    <!-- Pill 2: Auto-Export -->
+    <rect x="140" y="0" rx="12" ry="12" width="130" height="22" fill="#0d1117" stroke="#7ee787" stroke-width="1"/>
+    <text x="205" y="15" fill="#7ee787" text-anchor="middle" font-weight="600">AUTO-EXPORT</text>
 
-    <!-- Pill 3: MITRE -->
-    <rect x="270" y="0" rx="12" ry="12" width="130" height="22" fill="#0d1117" stroke="#a78bfa" stroke-width="1"/>
-    <text x="335" y="15" fill="#a78bfa" text-anchor="middle" font-weight="600">MITRE ATT&amp;CK</text>
+    <!-- Pill 3: SHA-256 -->
+    <rect x="285" y="0" rx="12" ry="12" width="105" height="22" fill="#0d1117" stroke="#ffa657" stroke-width="1"/>
+    <text x="337" y="15" fill="#ffa657" text-anchor="middle" font-weight="600">SHA-256</text>
 
-    <!-- Pill 4: EN + FA -->
-    <rect x="415" y="0" rx="12" ry="12" width="90" height="22" fill="#0d1117" stroke="#ff6bd6" stroke-width="1"/>
-    <text x="460" y="15" fill="#ff6bd6" text-anchor="middle" font-weight="600">EN + FA</text>
+    <!-- Pill 4: MITRE -->
+    <rect x="405" y="0" rx="12" ry="12" width="130" height="22" fill="#0d1117" stroke="#a78bfa" stroke-width="1"/>
+    <text x="470" y="15" fill="#a78bfa" text-anchor="middle" font-weight="600">MITRE ATT&amp;CK</text>
+
+    <!-- Pill 5: EN + FA -->
+    <rect x="550" y="0" rx="12" ry="12" width="90" height="22" fill="#0d1117" stroke="#ff6bd6" stroke-width="1"/>
+    <text x="595" y="15" fill="#ff6bd6" text-anchor="middle" font-weight="600">EN + FA</text>
   </g>
 
   <!-- Bottom-right version tag -->
@@ -162,6 +218,22 @@
   <rect x="0" y="0" width="1200" height="2" fill="#5ee7ff" opacity="0.3">
     <animate attributeName="y" from="0" to="400" dur="6s" repeatCount="indefinite"/>
   </rect>
+
+  <!-- Animated data flow dots from USB to hexagon -->
+  <g opacity="0.7">
+    <circle r="3" fill="#7ee787" filter="url(#glow)">
+      <animateMotion dur="2s" repeatCount="indefinite" path="M 730 340 Q 600 280 200 260"/>
+      <animate attributeName="opacity" values="1;0.5;1" dur="2s" repeatCount="indefinite"/>
+    </circle>
+    <circle r="3" fill="#5ee7ff" filter="url(#glow)">
+      <animateMotion dur="2.5s" repeatCount="indefinite" path="M 730 340 Q 600 280 200 260" begin="0.5s"/>
+      <animate attributeName="opacity" values="1;0.5;1" dur="2.5s" repeatCount="indefinite"/>
+    </circle>
+    <circle r="3" fill="#a78bfa" filter="url(#glow)">
+      <animateMotion dur="3s" repeatCount="indefinite" path="M 730 340 Q 600 280 200 260" begin="1s"/>
+      <animate attributeName="opacity" values="1;0.5;1" dur="3s" repeatCount="indefinite"/>
+    </circle>
+  </g>
 
   <!-- Scanlines overlay -->
   <rect width="1200" height="400" fill="url(#scanlines)" opacity="0.3"/>
